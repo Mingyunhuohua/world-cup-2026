@@ -1,0 +1,394 @@
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+
+const usage = `Usage:
+  npm run data:update -- --file input.json --out C:/tmp/worldcup-import.json
+  npm run data:update -- --url https://example.com/feed.json --out C:/tmp/worldcup-import.json
+  npm run data:update -- --file input.json --print
+
+Accepted JSON:
+  - Full TournamentSnapshot with teams + fixtures
+  - Import package with results, fixtures, matches, or teamPatches arrays
+  - Raw array of result rows, treated as { "results": [...] }
+`;
+
+export function parseArgs(argv) {
+  const options = {
+    file: undefined,
+    url: undefined,
+    out: undefined,
+    print: false,
+    label: undefined
+  };
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+
+    if (arg === "--file") {
+      options.file = readArgValue(argv, index, "--file");
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--url") {
+      options.url = readArgValue(argv, index, "--url");
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--out") {
+      options.out = readArgValue(argv, index, "--out");
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--label") {
+      options.label = readArgValue(argv, index, "--label");
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--print") {
+      options.print = true;
+      continue;
+    }
+
+    if (arg === "--help" || arg === "-h") {
+      options.help = true;
+      continue;
+    }
+
+    throw new Error(`Unknown option: ${arg}`);
+  }
+
+  if (!options.help && Boolean(options.file) === Boolean(options.url)) {
+    throw new Error("Pass exactly one of --file or --url.");
+  }
+
+  if (!options.help && !options.print && !options.out) {
+    throw new Error("Pass --out or --print.");
+  }
+
+  return options;
+}
+
+export async function loadJsonSource(options) {
+  if (options.file) {
+    const text = await readFile(resolve(options.file), "utf8");
+    return parseJson(text, `file ${options.file}`);
+  }
+
+  if (options.url) {
+    if (typeof fetch !== "function") {
+      throw new Error("This Node runtime does not provide fetch; use --file instead.");
+    }
+
+    const response = await fetch(options.url);
+    if (!response.ok) {
+      throw new Error(`URL request failed: ${response.status} ${response.statusText}`);
+    }
+
+    return parseJson(await response.text(), `URL ${options.url}`);
+  }
+
+  throw new Error("Missing input source.");
+}
+
+export function normalizeImportPayload(payload, options = {}) {
+  const sourceLabel = options.label ?? "Local data updater";
+  const generatedAt = options.generatedAt ?? new Date().toISOString();
+  const value = Array.isArray(payload) ? { results: payload } : payload;
+
+  if (!isRecord(value)) {
+    throw new Error("JSON root must be an object or an array of result rows.");
+  }
+
+  if (Array.isArray(value.teams) && Array.isArray(value.fixtures)) {
+    return normalizeSnapshot(value, sourceLabel, generatedAt);
+  }
+
+  const results = normalizeResultRows(readArray(value, "results") ?? readArray(value, "matches") ?? []);
+  const fixtures = normalizeFixtureRows(readArray(value, "fixtures") ?? []);
+  const teamPatches = normalizeTeamPatchRows(readArray(value, "teamPatches") ?? []);
+
+  if (results.length === 0 && fixtures.length === 0 && teamPatches.length === 0) {
+    throw new Error("No importable results, matches, fixtures, teamPatches, or full snapshot found.");
+  }
+
+  return {
+    label: readString(value, "label") ?? sourceLabel,
+    generatedAt,
+    results,
+    fixtures,
+    teamPatches
+  };
+}
+
+export async function writeJsonOutput(payload, options) {
+  const json = `${JSON.stringify(payload, null, 2)}\n`;
+
+  if (options.print) {
+    process.stdout.write(json);
+  }
+
+  if (options.out) {
+    const outputPath = resolve(options.out);
+    await mkdir(dirname(outputPath), { recursive: true });
+    await writeFile(outputPath, json, "utf8");
+  }
+
+  return json;
+}
+
+export async function runCli(argv = process.argv.slice(2)) {
+  const options = parseArgs(argv);
+
+  if (options.help) {
+    process.stdout.write(`${usage}\n`);
+    return;
+  }
+
+  const source = await loadJsonSource(options);
+  const normalized = normalizeImportPayload(source, {
+    label: options.label,
+    generatedAt: new Date().toISOString()
+  });
+  await writeJsonOutput(normalized, options);
+}
+
+function normalizeSnapshot(value, sourceLabel, generatedAt) {
+  const fixtures = value.fixtures.map((fixture) => normalizeFixture(fixture));
+  const completedMatches = fixtures.filter((fixture) => fixture.status === "completed" && fixture.result).length;
+
+  return {
+    ...value,
+    label: readString(value, "label") ?? sourceLabel,
+    collectedAt: readString(value, "collectedAt") ?? generatedAt,
+    fixtures,
+    completedMatches,
+    scheduledMatches: fixtures.length - completedMatches,
+    notes: Array.isArray(value.notes) ? value.notes : ["Generated by local data updater."]
+  };
+}
+
+function normalizeResultRows(rows) {
+  return rows.map((row, index) => {
+    if (!isRecord(row)) {
+      throw new Error(`Result row ${index + 1} must be an object.`);
+    }
+
+    const matchId = readString(row, "matchId") ?? readString(row, "id");
+    const result = readResult(row);
+    const discipline = readDiscipline(row);
+
+    if (!matchId) {
+      throw new Error(`Result row ${index + 1} is missing matchId or id.`);
+    }
+
+    if (!result && !discipline) {
+      throw new Error(`Result row ${index + 1} is missing numeric homeGoals and awayGoals or discipline data.`);
+    }
+
+    return {
+      matchId,
+      ...(result ?? {}),
+      ...(discipline ? { discipline } : {}),
+      status: readString(row, "status") ?? (result ? "completed" : "scheduled")
+    };
+  });
+}
+
+function normalizeFixtureRows(rows) {
+  return rows.map((row, index) => {
+    if (!isRecord(row)) {
+      throw new Error(`Fixture row ${index + 1} must be an object.`);
+    }
+
+    return normalizeFixture(row, index);
+  });
+}
+
+function normalizeTeamPatchRows(rows) {
+  return rows.map((row, index) => {
+    if (!isRecord(row)) {
+      throw new Error(`Team patch row ${index + 1} must be an object.`);
+    }
+
+    const id = readString(row, "id") ?? readString(row, "teamId");
+    const abbr = readString(row, "abbr");
+
+    if (!id && !abbr) {
+      throw new Error(`Team patch row ${index + 1} is missing id, teamId, or abbr.`);
+    }
+
+    return {
+      ...row,
+      ...(id ? { id } : {}),
+      ...(abbr ? { abbr } : {})
+    };
+  });
+}
+
+function normalizeFixture(row, index = 0) {
+  const id = readString(row, "id");
+  if (!id) {
+    throw new Error(`Fixture row ${index + 1} is missing id.`);
+  }
+
+  const result = readResult(row);
+  const normalized = {
+    ...row,
+    id,
+    status: readString(row, "status") ?? (result ? "completed" : "scheduled")
+  };
+
+  if (result) {
+    normalized.result = result;
+    normalized.homeGoals = result.homeGoals;
+    normalized.awayGoals = result.awayGoals;
+  }
+
+  const discipline = readDiscipline(row);
+  if (discipline) {
+    normalized.discipline = discipline;
+  }
+
+  return normalized;
+}
+
+function parseJson(text, label) {
+  try {
+    return JSON.parse(text.replace(/^\uFEFF/, ""));
+  } catch {
+    throw new Error(`Invalid JSON from ${label}.`);
+  }
+}
+
+function readArgValue(argv, index, name) {
+  const value = argv[index + 1];
+
+  if (!value || value.startsWith("--")) {
+    throw new Error(`${name} requires a value.`);
+  }
+
+  return value;
+}
+
+function readArray(record, key) {
+  const value = record[key];
+
+  return Array.isArray(value) ? value : undefined;
+}
+
+function readString(record, key) {
+  const value = record[key];
+
+  return typeof value === "string" && value.trim().length > 0 ? value : undefined;
+}
+
+function readResult(record) {
+  if (isRecord(record.result)) {
+    const homeGoals = readNumber(record.result, "homeGoals");
+    const awayGoals = readNumber(record.result, "awayGoals");
+
+    if (homeGoals !== undefined && awayGoals !== undefined) {
+      return { homeGoals, awayGoals };
+    }
+  }
+
+  const homeGoals = readNumber(record, "homeGoals");
+  const awayGoals = readNumber(record, "awayGoals");
+
+  if (homeGoals === undefined || awayGoals === undefined) {
+    return undefined;
+  }
+
+  return { homeGoals, awayGoals };
+}
+
+function readDiscipline(record) {
+  if (isRecord(record.discipline)) {
+    const home = readDisciplineRecord(record.discipline.home);
+    const away = readDisciplineRecord(record.discipline.away);
+
+    if (home || away) {
+      return {
+        home: home ?? {},
+        away: away ?? {}
+      };
+    }
+  }
+
+  const home = readDisciplineRecord(record, "home");
+  const away = readDisciplineRecord(record, "away");
+
+  if (!home && !away) {
+    return undefined;
+  }
+
+  return {
+    home: home ?? {},
+    away: away ?? {}
+  };
+}
+
+function readDisciplineRecord(value, prefix) {
+  if (!isRecord(value)) {
+    return undefined;
+  }
+
+  const yellowCards =
+    readNumber(value, prefix ? `${prefix}YellowCards` : "yellowCards") ??
+    readNumber(value, prefix ? `${prefix}Yellows` : "yellows");
+  const secondYellowReds =
+    readNumber(value, prefix ? `${prefix}SecondYellowReds` : "secondYellowReds") ??
+    readNumber(value, prefix ? `${prefix}SecondYellowRedCards` : "secondYellowRedCards");
+  const directRedCards =
+    readNumber(value, prefix ? `${prefix}DirectRedCards` : "directRedCards") ??
+    readNumber(value, prefix ? `${prefix}RedCards` : "redCards") ??
+    readNumber(value, prefix ? `${prefix}Reds` : "reds");
+  const yellowThenDirectReds =
+    readNumber(value, prefix ? `${prefix}YellowThenDirectReds` : "yellowThenDirectReds") ??
+    readNumber(value, prefix ? `${prefix}YellowThenDirectRedCards` : "yellowThenDirectRedCards");
+
+  if (
+    yellowCards === undefined &&
+    secondYellowReds === undefined &&
+    directRedCards === undefined &&
+    yellowThenDirectReds === undefined
+  ) {
+    return undefined;
+  }
+
+  return removeUndefined({
+    yellowCards,
+    secondYellowReds,
+    directRedCards,
+    yellowThenDirectReds
+  });
+}
+
+function removeUndefined(record) {
+  return Object.fromEntries(
+    Object.entries(record).filter(([, value]) => value !== undefined)
+  );
+}
+
+function readNumber(record, key) {
+  const value = record[key];
+
+  return typeof value === "number" && Number.isFinite(value) ? value : undefined;
+}
+
+function isRecord(value) {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  runCli().catch((error) => {
+    process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
+    process.stderr.write(`${usage}\n`);
+    process.exitCode = 1;
+  });
+}

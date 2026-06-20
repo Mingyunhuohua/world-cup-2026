@@ -1,0 +1,6 @@
+id,abbr,name,sentiment,hype,risk,injuryMentions,totalMentions,weight,headline
+arg,ARG,Argentina,0.45,0.78,0.12,1,25,1.2,Positive training camp reports
+fra,FRA,France,0.25,0.82,0.18,3,28,1.1,Rotation questions but strong squad depth
+bra,BRA,Brazil,0.30,0.75,0.15,2,24,1.0,Attack looks sharp in warmups
+usa,USA,United States,0.10,0.68,0.20,4,22,1.0,Home pressure and minor fitness concerns
+mex,MEX,Mexico,0.05,0.72,0.25,5,26,1.0,Host expectations remain high

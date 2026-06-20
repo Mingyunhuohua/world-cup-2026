@@ -1,0 +1,34 @@
+{
+  "fixtures": [
+    {
+      "id": "A-1-1",
+      "group": "A",
+      "matchday": 1,
+      "date": "2026-06-11T19:00:00Z",
+      "venue": "Estadio Azteca",
+      "homeTeamId": "mex",
+      "awayTeamId": "rsa",
+      "status": "scheduled"
+    },
+    {
+      "id": "A-1-2",
+      "group": "A",
+      "matchday": 1,
+      "date": "2026-06-12T00:00:00Z",
+      "venue": "Estadio Guadalajara",
+      "homeTeamId": "kor",
+      "awayTeamId": "nor",
+      "status": "scheduled"
+    },
+    {
+      "id": "B-1-1",
+      "group": "B",
+      "matchday": 1,
+      "date": "2026-06-12T19:00:00Z",
+      "venue": "MetLife Stadium",
+      "homeTeamId": "usa",
+      "awayTeamId": "gha",
+      "status": "scheduled"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+id,abbr,name,fifaRank,elo,attack,defense,form,injuries
+arg,ARG,Argentina,2,2114,1.18,1.13,0.11,0.04
+fra,FRA,France,3,2092,1.16,1.11,0.09,0.06
+bra,BRA,Brazil,5,2058,1.14,1.08,0.07,0.05
+usa,USA,United States,18,1834,1.02,0.99,0.04,0.08
+mex,MEX,Mexico,15,1848,1.01,1.01,0.03,0.07
