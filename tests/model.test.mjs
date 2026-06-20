@@ -302,7 +302,7 @@ test("小组纪律扣分会转成淘汰赛停赛风险负荷", () => {
 
 test("当前快照包含完整小组赛和已完赛比分", () => {
   assert.equal(currentTournamentSnapshot.fixtures.length, 72);
-  assert.equal(currentTournamentSnapshot.completedMatches, 20);
+  assert.equal(currentTournamentSnapshot.completedMatches, 28);
 
   const mexico = teams.find((team) => team.abbr === "MEX");
   const southAfrica = teams.find((team) => team.abbr === "RSA");
@@ -787,7 +787,9 @@ test("导入复盘历史会保存最近导入后摘要并限制数量", () => {
 test("导入预检到历史回滚链路会恢复导入前预测状态", () => {
   const storage = createMemoryStorage();
   const targetMatch = fixtures.find(
-    (fixture) => fixture.homeTeamId === "mex" && fixture.status !== "completed"
+    (fixture) =>
+      (fixture.homeTeamId === "mex" || fixture.awayTeamId === "mex") &&
+      fixture.status !== "completed"
   );
   const mexicoBefore = currentTournamentSnapshot.teams.find((team) => team.id === "mex");
   const importText = JSON.stringify({
@@ -848,11 +850,12 @@ test("导入预检到历史回滚链路会恢复导入前预测状态", () => {
   assert.equal(loadedAfterImport.restored, true);
   assert.equal(importedMexico.form, 0.32);
   assert.deepEqual(importedMatch.result, { homeGoals: 3, awayGoals: 0 });
-  assert.ok(afterPrediction.homeWin > beforePrediction.homeWin);
+  const mexicoWinKey = targetMatch.homeTeamId === "mex" ? "homeWin" : "awayWin";
+  assert.ok(afterPrediction[mexicoWinKey] > beforePrediction[mexicoWinKey]);
   assert.equal(loadedAfterRollback.restored, true);
   assert.equal(restoredMexico.form, mexicoBefore.form);
   assert.equal(restoredMatch.result, targetMatch.result);
-  assert.equal(rollbackPrediction.homeWin, beforePrediction.homeWin);
+  assert.equal(rollbackPrediction[mexicoWinKey], beforePrediction[mexicoWinKey]);
 });
 
 test("导入模板会生成可用的赛果和赛程 JSON", () => {

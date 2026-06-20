@@ -1,6 +1,6 @@
 import type { DataProvider, DataSource } from "../types.ts";
 
-export const snapshotCollectedAt = "2026-06-19T12:00:00+08:00";
+export const snapshotCollectedAt = "2026-06-21T12:00:00+08:00";
 
 export const dataProviders: DataProvider[] = [
   {

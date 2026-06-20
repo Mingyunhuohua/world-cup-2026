@@ -147,7 +147,11 @@ const specs: FixtureSpec[] = [
     away: "CUW",
     result: { homeGoals: 7, awayGoals: 1, source: resultFallbackSource }
   },
-  fixtureSpec("E-1-2", "E", 1, "2026-06-14T22:00:00Z", "Philadelphia Stadium", "CIV", "ECU"),
+  fixtureSpec("E-1-2", "E", 1, "2026-06-14T22:00:00Z", "Philadelphia Stadium", "CIV", "ECU", {
+    homeGoals: 1,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
   fixtureSpec("F-1-1", "F", 1, "2026-06-14T20:00:00Z", "Dallas Stadium", "NED", "JPN", {
     homeGoals: 2,
     awayGoals: 2,
@@ -158,20 +162,28 @@ const specs: FixtureSpec[] = [
     awayGoals: 1,
     source: resultFallbackSource
   }),
-  fixtureSpec("G-1-1", "G", 1, "2026-06-16T22:00:00Z", "Los Angeles Stadium", "BEL", "IRN"),
-  fixtureSpec("G-1-2", "G", 1, "2026-06-16T19:00:00Z", "Toronto Stadium", "NZL", "EGY"),
+  fixtureSpec("G-1-1", "G", 1, "2026-06-21T19:00:00Z", "Los Angeles Stadium", "BEL", "IRN"),
+  fixtureSpec("G-1-2", "G", 1, "2026-06-22T01:00:00Z", "Vancouver Stadium", "NZL", "EGY"),
   fixtureSpec("H-1-1", "H", 1, "2026-06-15T17:00:00Z", "Atlanta Stadium", "ESP", "CPV", {
     homeGoals: 0,
     awayGoals: 0,
     source: resultFallbackSource
   }),
-  fixtureSpec("H-1-2", "H", 1, "2026-06-15T20:00:00Z", "Miami Stadium", "KSA", "URU"),
-  fixtureSpec("I-1-1", "I", 1, "2026-06-17T19:00:00Z", "New York New Jersey Stadium", "FRA", "SEN", {
+  fixtureSpec("H-1-2", "H", 1, "2026-06-15T20:00:00Z", "Miami Stadium", "KSA", "URU", {
+    homeGoals: 1,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("I-1-1", "I", 1, "2026-06-16T19:00:00Z", "New York New Jersey Stadium", "FRA", "SEN", {
     homeGoals: 3,
     awayGoals: 1,
     source: resultFallbackSource
   }),
-  fixtureSpec("I-1-2", "I", 1, "2026-06-18T01:00:00Z", "Kansas City Stadium", "IRQ", "NOR"),
+  fixtureSpec("I-1-2", "I", 1, "2026-06-16T22:00:00Z", "Boston Stadium", "IRQ", "NOR", {
+    homeGoals: 1,
+    awayGoals: 4,
+    source: resultFallbackSource
+  }),
   fixtureSpec("J-1-1", "J", 1, "2026-06-18T01:00:00Z", "Kansas City Stadium", "ARG", "ALG", {
     homeGoals: 3,
     awayGoals: 0,
@@ -203,16 +215,36 @@ const specs: FixtureSpec[] = [
     source: resultFallbackSource
   }),
 
-  fixtureSpec("A-2-1", "A", 2, "2026-06-18T22:00:00Z", "Atlanta Stadium", "MEX", "KOR"),
+  fixtureSpec("A-2-1", "A", 2, "2026-06-18T22:00:00Z", "Atlanta Stadium", "MEX", "KOR", {
+    homeGoals: 1,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
   fixtureSpec("A-2-2", "A", 2, "2026-06-18T19:00:00Z", "Atlanta Stadium", "CZE", "RSA", {
     homeGoals: 1,
     awayGoals: 1,
     source: resultFallbackSource
   }),
-  fixtureSpec("B-2-1", "B", 2, "2026-06-18T22:00:00Z", "Los Angeles Stadium", "SUI", "BIH"),
-  fixtureSpec("B-2-2", "B", 2, "2026-06-19T01:00:00Z", "Vancouver Stadium", "CAN", "QAT"),
-  fixtureSpec("C-2-1", "C", 2, "2026-06-20T22:00:00Z", "Miami Stadium", "BRA", "HAI"),
-  fixtureSpec("C-2-2", "C", 2, "2026-06-20T19:00:00Z", "Kansas City Stadium", "SCO", "MAR"),
+  fixtureSpec("B-2-1", "B", 2, "2026-06-18T22:00:00Z", "Los Angeles Stadium", "SUI", "BIH", {
+    homeGoals: 4,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("B-2-2", "B", 2, "2026-06-19T01:00:00Z", "Vancouver Stadium", "CAN", "QAT", {
+    homeGoals: 6,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("C-2-1", "C", 2, "2026-06-19T22:00:00Z", "Philadelphia Stadium", "BRA", "HAI", {
+    homeGoals: 3,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("C-2-2", "C", 2, "2026-06-19T19:00:00Z", "Boston Stadium", "SCO", "MAR", {
+    homeGoals: 0,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
   fixtureSpec("D-2-1", "D", 2, "2026-06-21T01:00:00Z", "Seattle Stadium", "AUS", "PAR"),
   fixtureSpec("D-2-2", "D", 2, "2026-06-21T22:00:00Z", "Philadelphia Stadium", "USA", "TUR"),
   fixtureSpec("E-2-1", "E", 2, "2026-06-21T19:00:00Z", "Dallas Stadium", "GER", "CIV"),
