@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node node_modules/vite/bin/vite.js --host 127.0.0.1",
+    "dev": "node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5183 --strictPort",
     "build": "node node_modules/typescript/bin/tsc --noEmit && node node_modules/vite/bin/vite.js build --base ./",
     "data:adapter": "node scripts/adapters/index.mjs",
     "data:odds:live": "node scripts/adapters/index.mjs --adapter odds-market --live --out public/data/odds-live.json",
