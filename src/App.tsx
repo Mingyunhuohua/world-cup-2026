@@ -20,7 +20,7 @@ import {
   saveRuntimeSnapshot
 } from "./data/index.ts";
 import type { ImportHistoryEntry } from "./data/index.ts";
-import { checkLiveOddsUpdate, markLiveOddsApplied } from "./data/liveOddsSync.ts";
+import { checkLiveSignalUpdate, markLiveSignalApplied } from "./data/liveSignalSync.ts";
 import { defaultModelConfig } from "./model/config.ts";
 import {
   clearModelConfig,
@@ -184,7 +184,7 @@ function App() {
   const simulationTaskIdRef = useRef(0);
   const navInteractionLockRef = useRef(0);
   const [isPending, startTransition] = useTransition();
-  const [liveOddsStatus, setLiveOddsStatus] = useState("");
+  const [liveSignalStatus, setLiveSignalStatus] = useState("");
 
   const config = modelConfig;
   const fixtures = snapshot.fixtures;
@@ -443,21 +443,21 @@ function App() {
   useEffect(() => {
     let cancelled = false;
 
-    async function syncLiveOdds() {
-      const result = await checkLiveOddsUpdate(snapshot);
+    async function syncLiveSignal() {
+      const result = await checkLiveSignalUpdate(snapshot);
       if (cancelled || !result) {
         return;
       }
 
       applySnapshotImport(result.snapshot, result.summary);
-      markLiveOddsApplied(result.generatedAt);
-      setLiveOddsStatus(
-        `已自动应用 ${formatDateTime(result.generatedAt)} 的实时赔率信号（${result.summary.importedTeams} 支球队）。`
+      markLiveSignalApplied(result.appliedKey);
+      setLiveSignalStatus(
+        `已自动融合实时赔率与赛事内战绩，更新 ${result.summary.importedTeams} 支球队状态（${formatDateTime(new Date().toISOString())}）。`
       );
     }
 
-    syncLiveOdds();
-    const intervalId = window.setInterval(syncLiveOdds, 30 * 60 * 1000);
+    syncLiveSignal();
+    const intervalId = window.setInterval(syncLiveSignal, 30 * 60 * 1000);
 
     return () => {
       cancelled = true;
@@ -716,10 +716,10 @@ function App() {
               <span>接入路线</span>
               <strong>{snapshot.completedMatches} 场赛果已入模</strong>
             </div>
-            {liveOddsStatus ? (
+            {liveSignalStatus ? (
               <div>
-                <span>实时赔率同步</span>
-                <strong>{liveOddsStatus}</strong>
+                <span>实时数据同步</span>
+                <strong>{liveSignalStatus}</strong>
               </div>
             ) : null}
           </section>
