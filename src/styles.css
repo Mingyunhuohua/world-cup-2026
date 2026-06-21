@@ -504,8 +504,12 @@ select {
   display: grid;
   grid-template-columns: minmax(580px, 1.48fr) minmax(300px, 0.82fr);
   gap: 16px;
-  align-items: start;
+  align-items: stretch;
   min-width: 0;
+}
+
+.main-column .match-panel {
+  height: 100%;
 }
 
 .main-column {
@@ -1260,7 +1264,7 @@ select {
 
 .heatmap__grid {
   display: grid;
-  grid-template-columns: 38px repeat(6, minmax(34px, 1fr));
+  grid-template-columns: 38px repeat(5, minmax(34px, 1fr));
   gap: 4px;
   min-width: 0;
   overflow-x: auto;

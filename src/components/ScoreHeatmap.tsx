@@ -11,7 +11,7 @@ type ScoreSelection = {
   awayGoals: number;
 };
 
-const goalAxis = [0, 1, 2, 3, 4, 5];
+const goalAxis = [0, 1, 2, 3, 4];
 
 function getResultLabel(homeGoals: number, awayGoals: number) {
   if (homeGoals > awayGoals) return "主胜";
@@ -37,7 +37,6 @@ export function ScoreHeatmap({ prediction }: ScoreHeatmapProps) {
     [prediction.scoreMatrix]
   );
   const max = Math.max(...prediction.scoreMatrix.map((score) => score.probability));
-  const goals = Array.from({ length: 6 }, (_, index) => index);
   const defaultSelection = prediction.topScores[0] ?? {
     homeGoals: 0,
     awayGoals: 0,
