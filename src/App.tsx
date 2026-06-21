@@ -215,7 +215,7 @@ function App() {
     () =>
       sortUpcomingFixtures(
         predictableFixtures.filter((fixture) => fixture.status !== "completed")
-      ).slice(0, 5),
+      ).slice(0, 4),
     [predictableFixtures]
   );
   const simulationByTeamId = useMemo(

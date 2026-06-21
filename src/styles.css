@@ -308,17 +308,17 @@ select {
 .dashboard-overview {
   display: grid;
   grid-template-columns: minmax(230px, 0.34fr) minmax(0, 1fr);
-  gap: 14px;
+  gap: 16px;
   align-items: stretch;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
   min-width: 0;
 }
 
 .status-strip {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 14px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .dashboard-overview .status-strip {
@@ -335,7 +335,7 @@ select {
 }
 
 .status-strip div {
-  padding: 12px 14px;
+  padding: 14px 16px;
 }
 
 .status-strip span,
@@ -347,8 +347,9 @@ select {
 
 .status-strip strong {
   display: block;
-  margin-top: 4px;
-  font-size: 14px;
+  margin-top: 5px;
+  font-size: 17px;
+  font-weight: 700;
 }
 
 .daily-match-panel {
@@ -357,18 +358,18 @@ select {
 
 .daily-match-list {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .daily-match-card {
   display: grid;
   min-width: 0;
-  min-height: 154px;
-  gap: 9px;
-  padding: 12px;
+  min-height: 162px;
+  gap: 10px;
+  padding: 14px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--ink);
   background: var(--surface-strong);
   text-align: left;
@@ -478,11 +479,11 @@ select {
 .daily-match-card__details span {
   min-width: 0;
   overflow: hidden;
-  padding: 5px 6px;
+  padding: 6px 6px;
   border-radius: 7px;
   color: var(--green-dark);
   background: #fff;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 900;
   text-align: center;
   text-overflow: ellipsis;
@@ -543,7 +544,7 @@ select {
 }
 
 .panel {
-  padding: 16px;
+  padding: 20px;
   min-width: 0;
 }
 
@@ -860,15 +861,15 @@ select {
 .match-summary-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 14px;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
 .match-insight {
   display: grid;
   gap: 10px;
-  margin-bottom: 14px;
-  padding: 12px;
+  margin-bottom: 18px;
+  padding: 14px;
   border: 1px solid rgba(47, 125, 89, 0.22);
   border-radius: 8px;
   background: #f2faf5;
@@ -930,16 +931,16 @@ select {
 .match-insight__tiles {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: 10px;
 }
 
 .match-insight__tile {
   display: grid;
   min-width: 0;
-  min-height: 82px;
+  min-height: 92px;
   align-content: space-between;
-  gap: 5px;
-  padding: 9px;
+  gap: 6px;
+  padding: 12px;
   border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.78);
@@ -961,7 +962,8 @@ select {
 
 .match-insight__tile strong {
   color: var(--ink);
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .match-insight__tile p {
@@ -974,10 +976,10 @@ select {
 .match-summary-card {
   display: grid;
   min-width: 0;
-  min-height: 92px;
+  min-height: 98px;
   align-content: space-between;
-  gap: 7px;
-  padding: 11px;
+  gap: 8px;
+  padding: 13px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface-strong);
