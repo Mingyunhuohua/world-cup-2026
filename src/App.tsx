@@ -20,6 +20,7 @@ import {
   saveRuntimeSnapshot
 } from "./data/index.ts";
 import type { ImportHistoryEntry } from "./data/index.ts";
+import { checkLiveOddsUpdate, markLiveOddsApplied } from "./data/liveOddsSync.ts";
 import { defaultModelConfig } from "./model/config.ts";
 import {
   clearModelConfig,
@@ -183,6 +184,7 @@ function App() {
   const simulationTaskIdRef = useRef(0);
   const navInteractionLockRef = useRef(0);
   const [isPending, startTransition] = useTransition();
+  const [liveOddsStatus, setLiveOddsStatus] = useState("");
 
   const config = modelConfig;
   const fixtures = snapshot.fixtures;
@@ -438,6 +440,31 @@ function App() {
     };
   }, [config, fixtures, seed, teams]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function syncLiveOdds() {
+      const result = await checkLiveOddsUpdate(snapshot);
+      if (cancelled || !result) {
+        return;
+      }
+
+      applySnapshotImport(result.snapshot, result.summary);
+      markLiveOddsApplied(result.generatedAt);
+      setLiveOddsStatus(
+        `已自动应用 ${formatDateTime(result.generatedAt)} 的实时赔率信号（${result.summary.importedTeams} 支球队）。`
+      );
+    }
+
+    syncLiveOdds();
+    const intervalId = window.setInterval(syncLiveOdds, 30 * 60 * 1000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(intervalId);
+    };
+  }, [snapshot]);
+
   const topChampion = simulation.teams[0];
   const topChampionTeam = topChampion ? teamsById.get(topChampion.teamId) : undefined;
   const nextFixtures = predictableFixtures
@@ -689,6 +716,12 @@ function App() {
               <span>接入路线</span>
               <strong>{snapshot.completedMatches} 场赛果已入模</strong>
             </div>
+            {liveOddsStatus ? (
+              <div>
+                <span>实时赔率同步</span>
+                <strong>{liveOddsStatus}</strong>
+              </div>
+            ) : null}
           </section>
 
           <section className="panel daily-match-panel" aria-label="今日重点比赛">
