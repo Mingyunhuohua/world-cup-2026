@@ -208,7 +208,10 @@ export function BracketPreview({ simulation, teamsById }: BracketPreviewProps) {
         <p className="panel-empty">暂无可展示的淘汰赛路径。</p>
       )}
       <p className="note">
-        当前使用 {activeKnockoutRuleSet.label}。该视图按各轮晋级概率生成路径树；官方最佳第三名对位规则接入后可替换。
+        当前使用 {activeKnockoutRuleSet.label}。该视图按各轮晋级概率生成路径树；
+        {activeKnockoutRuleSet.source === "official"
+          ? "32 强对位遵循官方赛程编号与晋级路径，最佳第三名顶替哪个对位槛位按官方资格范围用稳定匹配算法求解。"
+          : "官方最佳第三名对位规则接入后可替换。"}
       </p>
     </section>
   );

@@ -61,7 +61,8 @@ import {
 } from "../src/model/standings.ts";
 import {
   activeKnockoutRuleSet,
-  buildRoundOf32Pairs
+  buildRoundOf32Pairs,
+  mvpSeededKnockoutRuleSet
 } from "../src/model/tournamentRules.ts";
 import {
   buildSimulationAuditSummary,
@@ -958,16 +959,48 @@ test("带进度回调的蒙特卡洛结果与原模拟保持一致", () => {
   assert.equal(progressEvents.at(-1).progress, 1);
 });
 
-test("淘汰赛规则适配层会生成稳定的 MVP 32 强占位对位", () => {
+const groupLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
+
+test("淘汰赛规则适配层默认使用 FIFA 官方对位结构并满足资格约束", () => {
+  const qualified = {
+    firsts: groupLetters.map((group) => buildQualified(`1${group}`, group, 1)),
+    seconds: groupLetters.map((group) => buildQualified(`2${group}`, group, 2)),
+    bestThirds: ["C", "D", "F", "G", "H", "I", "J", "K"].map((group) =>
+      buildQualified(`3${group}`, group, 3)
+    )
+  };
+  const pairs = buildRoundOf32Pairs(qualified);
+
+  assert.equal(activeKnockoutRuleSet.id, "fifa-2026-official-bracket");
+  assert.equal(activeKnockoutRuleSet.source, "official");
+  assert.equal(pairs.length, 16);
+
+  const byTeamIds = pairs.map(([home, away]) => `${home.teamId}-${away.teamId}`);
+  assert.ok(byTeamIds.includes("2A-2B"));
+  assert.ok(byTeamIds.includes("1C-2F"));
+  assert.ok(byTeamIds.includes("1F-2C"));
+  assert.ok(byTeamIds.includes("2D-2G"));
+
+  const groupOfThirdPlaceOpponent = pairs
+    .filter(([home]) => home.teamId.startsWith("1"))
+    .map(([, away]) => away)
+    .filter((away) => away.teamId.startsWith("3"));
+  assert.equal(groupOfThirdPlaceOpponent.length, 8);
+  assert.deepEqual(
+    new Set(groupOfThirdPlaceOpponent.map((team) => team.group)),
+    new Set(["C", "D", "F", "G", "H", "I", "J", "K"])
+  );
+});
+
+test("官方对位结构在数据不完整时会降级回 MVP 占位对位", () => {
   const qualified = {
     firsts: Array.from({ length: 12 }, (_, index) => buildQualified(`1${index}`, "A", 1)),
     seconds: Array.from({ length: 12 }, (_, index) => buildQualified(`2${index}`, "B", 2)),
     bestThirds: Array.from({ length: 8 }, (_, index) => buildQualified(`3${index}`, "C", 3))
   };
-  const pairs = buildRoundOf32Pairs(qualified);
+  const pairs = buildRoundOf32Pairs(qualified, mvpSeededKnockoutRuleSet);
 
-  assert.equal(activeKnockoutRuleSet.id, "mvp-seeded-2026-placeholder");
-  assert.equal(activeKnockoutRuleSet.source, "placeholder");
+  assert.equal(mvpSeededKnockoutRuleSet.source, "placeholder");
   assert.equal(pairs.length, 16);
   assert.deepEqual(
     pairs.map(([home, away]) => `${home.teamId}-${away.teamId}`).slice(0, 4),
@@ -977,6 +1010,47 @@ test("淘汰赛规则适配层会生成稳定的 MVP 32 强占位对位", () => 
     pairs.map(([home, away]) => `${home.teamId}-${away.teamId}`).slice(-4),
     ["20-21", "22-23", "24-25", "26-27"]
   );
+
+  const officialFallbackPairs = buildRoundOf32Pairs(qualified);
+  assert.equal(officialFallbackPairs.length, 16);
+});
+
+test("官方对位结构对全部 495 种最佳第三名组合都能求出合法匹配", () => {
+  function combinations(arr, k) {
+    const results = [];
+    function helper(start, combo) {
+      if (combo.length === k) {
+        results.push([...combo]);
+        return;
+      }
+      for (let i = start; i < arr.length; i += 1) {
+        combo.push(arr[i]);
+        helper(i + 1, combo);
+        combo.pop();
+      }
+    }
+    helper(0, []);
+    return results;
+  }
+
+  const allCombinations = combinations(groupLetters, 8);
+  assert.equal(allCombinations.length, 495);
+
+  let fallbackCount = 0;
+  for (const thirdGroups of allCombinations) {
+    const qualified = {
+      firsts: groupLetters.map((group) => buildQualified(`1${group}`, group, 1)),
+      seconds: groupLetters.map((group) => buildQualified(`2${group}`, group, 2)),
+      bestThirds: thirdGroups.map((group) => buildQualified(`3${group}`, group, 3))
+    };
+    const pairs = buildRoundOf32Pairs(qualified);
+    const thirdOpponents = pairs.flat().filter((team) => team.teamId.startsWith("3"));
+    if (new Set(thirdOpponents.map((team) => team.teamId)).size !== 8) {
+      fallbackCount += 1;
+    }
+  }
+
+  assert.equal(fallbackCount, 0);
 });
 
 test("模拟 Worker 请求和进度消息结构稳定", () => {
@@ -1086,7 +1160,7 @@ test("模拟结果可以导出为 CSV 和 JSON", () => {
   assert.equal(json.iterations, 100);
   assert.equal(json.audit.snapshotId, currentTournamentSnapshot.id);
   assert.equal(json.audit.modelConfig.simulationIterations, defaultModelConfig.simulationIterations);
-  assert.equal(json.audit.knockoutRuleSet.source, "placeholder");
+  assert.equal(json.audit.knockoutRuleSet.source, "official");
   assert.equal(json.teams.length, teams.length);
   assert.ok(json.teams[0].champion >= 0);
   assert.equal(audit.exportedAt, "2026-06-13T00:00:00.000Z");
