@@ -1,6 +1,6 @@
 {
   "label": "赔率市场 (live)",
-  "generatedAt": "2026-06-21T15:50:44.856Z",
+  "generatedAt": "2026-06-21T16:25:28.511Z",
   "adapter": {
     "id": "odds-market",
     "label": "赔率市场",
@@ -18,11 +18,11 @@
     },
     {
       "abbr": "KSA",
-      "form": -0.058
+      "form": -0.065
     },
     {
       "abbr": "BEL",
-      "form": 0.196
+      "form": 0.195
     },
     {
       "abbr": "IRN",
@@ -30,11 +30,11 @@
     },
     {
       "abbr": "URU",
-      "form": 0.039
+      "form": 0.038
     },
     {
       "abbr": "CPV",
-      "form": -0.053
+      "form": -0.052
     },
     {
       "abbr": "NZL",
@@ -170,15 +170,15 @@
     },
     {
       "abbr": "GER",
-      "form": 0.077
+      "form": 0.076
     },
     {
       "abbr": "JPN",
-      "form": 0.071
+      "form": 0.072
     },
     {
       "abbr": "SWE",
-      "form": -0.045
+      "form": -0.046
     },
     {
       "abbr": "TUN",
@@ -207,7 +207,7 @@
   ],
   "warnings": [
     "已从 The Odds API 拉取 36 场比赛的真实赔率，折算出 48 支球队的市场信号。",
-    "The Odds API 本月剩余额度：491 次请求。",
+    "The Odds API 本月剩余额度：490 次请求。",
     "赔率折算为相对中性的市场胜率信号（去除庄家抽水），用于调整 form；非官方夺冠赔率。"
   ]
 }
