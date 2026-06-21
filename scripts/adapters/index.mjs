@@ -40,6 +40,7 @@ export function parseAdapterArgs(argv) {
     out: undefined,
     print: false,
     list: false,
+    live: false,
     generatedAt: undefined,
     help: false
   };
@@ -73,6 +74,11 @@ export function parseAdapterArgs(argv) {
 
     if (arg === "--print") {
       options.print = true;
+      continue;
+    }
+
+    if (arg === "--live") {
+      options.live = true;
       continue;
     }
 
@@ -129,7 +135,8 @@ export async function runCli(argv = process.argv.slice(2)) {
 
   const payload = await runAdapter(options.adapter, {
     file: options.file,
-    generatedAt: options.generatedAt
+    generatedAt: options.generatedAt,
+    live: options.live
   });
 
   await writeAdapterOutput(payload, options);

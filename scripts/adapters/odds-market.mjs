@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { extname, resolve } from "node:path";
 import { buildAdapterPackage } from "./core.mjs";
+import { loadEnvFile } from "../load-env.mjs";
 
 const DEFAULT_FIELD_SIZE = 48;
 
@@ -13,7 +14,66 @@ export const oddsMarketAdapter = {
   notes: "不联网；可读取本地 JSON/CSV 赔率表，并将市场倾向折算为 form 补丁。"
 };
 
+// The Odds API 用英文全称标注球队，需要映射回内部缩写。
+// 名称来自 v4/sports/soccer_fifa_world_cup/odds 接口实测返回值，与 data/teams.ts 一一对应。
+const ODDS_API_TEAM_NAME_TO_ABBR = {
+  Algeria: "ALG",
+  Argentina: "ARG",
+  Australia: "AUS",
+  Austria: "AUT",
+  Belgium: "BEL",
+  "Bosnia & Herzegovina": "BIH",
+  Brazil: "BRA",
+  Canada: "CAN",
+  "Cape Verde": "CPV",
+  Colombia: "COL",
+  Croatia: "CRO",
+  "Curaçao": "CUW",
+  "Czech Republic": "CZE",
+  "DR Congo": "COD",
+  Ecuador: "ECU",
+  Egypt: "EGY",
+  England: "ENG",
+  France: "FRA",
+  Germany: "GER",
+  Ghana: "GHA",
+  Haiti: "HAI",
+  Iran: "IRN",
+  Iraq: "IRQ",
+  "Ivory Coast": "CIV",
+  Japan: "JPN",
+  Jordan: "JOR",
+  Mexico: "MEX",
+  Morocco: "MAR",
+  Netherlands: "NED",
+  "New Zealand": "NZL",
+  Norway: "NOR",
+  Panama: "PAN",
+  Paraguay: "PAR",
+  Portugal: "POR",
+  Qatar: "QAT",
+  "Saudi Arabia": "KSA",
+  Scotland: "SCO",
+  Senegal: "SEN",
+  "South Africa": "RSA",
+  "South Korea": "KOR",
+  Spain: "ESP",
+  Sweden: "SWE",
+  Switzerland: "SUI",
+  Tunisia: "TUN",
+  Turkey: "TUR",
+  USA: "USA",
+  Uruguay: "URU",
+  Uzbekistan: "UZB"
+};
+
+const ODDS_API_BASE_URL = "https://api.the-odds-api.com/v4/sports/soccer_fifa_world_cup/odds/";
+
 export async function runOddsMarketAdapter(options = {}) {
+  if (options.live) {
+    return runLiveOddsMarketAdapter(options);
+  }
+
   if (options.file) {
     const text = await readFile(resolve(options.file), "utf8");
     const teamPatches = parseOddsMarketSource(text, options.file);
@@ -38,6 +98,149 @@ export async function runOddsMarketAdapter(options = {}) {
     ],
     warnings: ["mock 赔率信号只用于验证接口；正式版本应保留原始赔率和归一化概率。"]
   });
+}
+
+async function runLiveOddsMarketAdapter(options) {
+  await loadEnvFile();
+  const apiKey = process.env.ODDS_API_KEY;
+
+  if (!apiKey) {
+    throw new Error(
+      "未找到 ODDS_API_KEY。请在项目根目录的 .env 文件中设置 ODDS_API_KEY=你的 The Odds API 密钥。"
+    );
+  }
+
+  const url = `${ODDS_API_BASE_URL}?apiKey=${encodeURIComponent(apiKey)}&regions=eu&markets=h2h`;
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`The Odds API 请求失败（${response.status}）：${body.slice(0, 300)}`);
+  }
+
+  const matches = await response.json();
+  const { teamPatches, warnings } = buildLiveOddsTeamPatches(matches);
+  const requestsRemaining = response.headers.get("x-requests-remaining");
+
+  return buildAdapterPackage(
+    {
+      ...oddsMarketAdapter,
+      mode: "live",
+      sourceUrl: ODDS_API_BASE_URL,
+      notes: "已联网调用 The Odds API 实时赔率（h2h 市场），按欧洲博彩商共识折算为球队 form 信号。"
+    },
+    {
+      generatedAt: options.generatedAt,
+      teamPatches,
+      warnings: [
+        `已从 The Odds API 拉取 ${matches.length} 场比赛的真实赔率，折算出 ${teamPatches.length} 支球队的市场信号。`,
+        requestsRemaining ? `The Odds API 本月剩余额度：${requestsRemaining} 次请求。` : undefined,
+        "赔率折算为相对中性的市场胜率信号（去除庄家抽水），用于调整 form；非官方夺冠赔率。",
+        ...warnings
+      ].filter(Boolean)
+    }
+  );
+}
+
+export function buildLiveOddsTeamPatches(matches) {
+  const winProbabilitiesByAbbr = new Map();
+  const unmappedTeamNames = new Set();
+
+  for (const match of matches) {
+    const homeAbbr = ODDS_API_TEAM_NAME_TO_ABBR[match.home_team];
+    const awayAbbr = ODDS_API_TEAM_NAME_TO_ABBR[match.away_team];
+
+    if (!homeAbbr) unmappedTeamNames.add(match.home_team);
+    if (!awayAbbr) unmappedTeamNames.add(match.away_team);
+    if (!homeAbbr || !awayAbbr) {
+      continue;
+    }
+
+    const consensus = averageH2hProbabilities(
+      match.bookmakers ?? [],
+      match.home_team,
+      match.away_team
+    );
+    if (!consensus) {
+      continue;
+    }
+
+    addWinProbability(winProbabilitiesByAbbr, homeAbbr, consensus.home);
+    addWinProbability(winProbabilitiesByAbbr, awayAbbr, consensus.away);
+  }
+
+  const teamPatches = [...winProbabilitiesByAbbr.entries()].map(([abbr, samples]) => {
+    const averageWinProbability = samples.reduce((sum, value) => sum + value, 0) / samples.length;
+
+    return {
+      abbr,
+      form: matchWinProbabilityToForm(averageWinProbability)
+    };
+  });
+
+  const warnings =
+    unmappedTeamNames.size > 0
+      ? [`以下球队名称未能匹配内部缩写，已跳过：${[...unmappedTeamNames].join("、")}`]
+      : [];
+
+  return { teamPatches, warnings };
+}
+
+function averageH2hProbabilities(bookmakers, homeTeamName, awayTeamName) {
+  const homeProbs = [];
+  const awayProbs = [];
+
+  for (const bookmaker of bookmakers) {
+    const market = bookmaker.markets?.find((item) => item.key === "h2h");
+    if (!market) {
+      continue;
+    }
+
+    const outcomes = market.outcomes ?? [];
+    const homePrice = outcomes.find((outcome) => outcome.name === homeTeamName)?.price;
+    const awayPrice = outcomes.find((outcome) => outcome.name === awayTeamName)?.price;
+    const drawPrice = outcomes.find((outcome) => outcome.name === "Draw")?.price;
+
+    if (!homePrice || !drawPrice || !awayPrice) {
+      continue;
+    }
+
+    const rawHome = 1 / homePrice;
+    const rawDraw = 1 / drawPrice;
+    const rawAway = 1 / awayPrice;
+    const overround = rawHome + rawDraw + rawAway;
+
+    if (!Number.isFinite(overround) || overround <= 0) {
+      continue;
+    }
+
+    homeProbs.push(rawHome / overround);
+    awayProbs.push(rawAway / overround);
+  }
+
+  if (homeProbs.length === 0) {
+    return undefined;
+  }
+
+  return {
+    home: homeProbs.reduce((sum, value) => sum + value, 0) / homeProbs.length,
+    away: awayProbs.reduce((sum, value) => sum + value, 0) / awayProbs.length
+  };
+}
+
+function addWinProbability(map, abbr, probability) {
+  const list = map.get(abbr) ?? [];
+  list.push(probability);
+  map.set(abbr, list);
+}
+
+// 把单场胜率折算成 teams.ts 里 form 字段的尺度（约 -0.2 到 0.2）。
+// 以三方均势 1/3 为基线，市场认为越强的一方 form 越高；纯粹是启发式折算，不代表精确概率模型。
+function matchWinProbabilityToForm(winProbability) {
+  const baseline = 1 / 3;
+  const signal = (winProbability - baseline) * 0.5;
+
+  return roundTo(clamp(signal, -0.2, 0.2), 3);
 }
 
 export function parseOddsMarketSource(text, filename = "odds") {
