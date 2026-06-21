@@ -1,3 +1,4 @@
+# 每4小时自动拉取一次The Odds API实时赔率并提交，配合托管平台的推送自动重新部署。
 name: Sync live odds
 
 on:
