@@ -1,6 +1,6 @@
 {
   "label": "赔率市场 (live)",
-  "generatedAt": "2026-06-23T19:23:23.209Z",
+  "generatedAt": "2026-06-23T23:38:18.029Z",
   "adapter": {
     "id": "odds-market",
     "label": "赔率市场",
@@ -13,36 +13,28 @@
   "fixtures": [],
   "teamPatches": [
     {
-      "abbr": "ENG",
-      "form": 0.2
-    },
-    {
-      "abbr": "GHA",
+      "abbr": "PAN",
       "form": -0.111
     },
     {
-      "abbr": "PAN",
-      "form": -0.117
-    },
-    {
       "abbr": "CRO",
-      "form": 0.14
+      "form": 0.109
     },
     {
       "abbr": "COL",
-      "form": 0.05
+      "form": 0.051
     },
     {
       "abbr": "COD",
-      "form": -0.008
+      "form": -0.005
     },
     {
       "abbr": "BIH",
-      "form": 0.18
+      "form": 0.176
     },
     {
       "abbr": "QAT",
-      "form": -0.104
+      "form": -0.102
     },
     {
       "abbr": "SUI",
@@ -50,15 +42,15 @@
     },
     {
       "abbr": "CAN",
-      "form": -0.025
+      "form": -0.024
     },
     {
       "abbr": "SCO",
-      "form": -0.107
+      "form": -0.108
     },
     {
       "abbr": "BRA",
-      "form": 0.182
+      "form": 0.183
     },
     {
       "abbr": "MAR",
@@ -66,15 +58,15 @@
     },
     {
       "abbr": "HAI",
-      "form": -0.14
+      "form": -0.138
     },
     {
       "abbr": "CZE",
-      "form": -0.036
+      "form": -0.037
     },
     {
       "abbr": "MEX",
-      "form": 0.079
+      "form": 0.08
     },
     {
       "abbr": "RSA",
@@ -102,11 +94,11 @@
     },
     {
       "abbr": "JPN",
-      "form": 0.082
+      "form": 0.083
     },
     {
       "abbr": "SWE",
-      "form": -0.053
+      "form": -0.054
     },
     {
       "abbr": "TUN",
@@ -122,7 +114,7 @@
     },
     {
       "abbr": "AUS",
-      "form": -0.045
+      "form": -0.046
     },
     {
       "abbr": "TUR",
@@ -138,7 +130,7 @@
     },
     {
       "abbr": "FRA",
-      "form": 0.128
+      "form": 0.129
     },
     {
       "abbr": "SEN",
@@ -158,11 +150,11 @@
     },
     {
       "abbr": "URU",
-      "form": -0.098
+      "form": -0.099
     },
     {
       "abbr": "ESP",
-      "form": 0.151
+      "form": 0.153
     },
     {
       "abbr": "NZL",
@@ -174,19 +166,27 @@
     },
     {
       "abbr": "EGY",
-      "form": 0.028
+      "form": 0.029
     },
     {
       "abbr": "IRN",
       "form": -0.04
     },
     {
+      "abbr": "GHA",
+      "form": -0.079
+    },
+    {
+      "abbr": "ENG",
+      "form": 0.2
+    },
+    {
       "abbr": "POR",
-      "form": 0.077
+      "form": 0.079
     },
     {
       "abbr": "UZB",
-      "form": -0.039
+      "form": -0.045
     },
     {
       "abbr": "ALG",
@@ -194,11 +194,11 @@
     },
     {
       "abbr": "AUT",
-      "form": 0.005
+      "form": 0.003
     },
     {
       "abbr": "JOR",
-      "form": -0.132
+      "form": -0.133
     },
     {
       "abbr": "ARG",
@@ -206,8 +206,8 @@
     }
   ],
   "warnings": [
-    "已从 The Odds API 拉取 27 场比赛的真实赔率，折算出 48 支球队的市场信号。",
-    "The Odds API 本月剩余额度：475 次请求。",
+    "已从 The Odds API 拉取 26 场比赛的真实赔率，折算出 48 支球队的市场信号。",
+    "The Odds API 本月剩余额度：474 次请求。",
     "赔率折算为相对中性的市场胜率信号（去除庄家抽水），用于调整 form；非官方夺冠赔率。"
   ]
 }
