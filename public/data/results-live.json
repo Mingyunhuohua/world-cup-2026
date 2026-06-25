@@ -1,0 +1,116 @@
+{
+  "label": "真实赛果 (live)",
+  "generatedAt": "2026-06-25T11:24:12.212Z",
+  "adapter": {
+    "id": "match-results",
+    "label": "真实赛果",
+    "kind": "results",
+    "mode": "live",
+    "sourceUrl": "https://api.the-odds-api.com/v4/sports/soccer_fifa_world_cup/scores/",
+    "notes": "可联网调用 The Odds API scores 接口拉取最近完赛比分，折算为按球队缩写标注的赛果。"
+  },
+  "completedResults": [
+    {
+      "homeAbbr": "ARG",
+      "awayAbbr": "AUT",
+      "homeGoals": 2,
+      "awayGoals": 0,
+      "commenceTime": "2026-06-22T17:00:00Z"
+    },
+    {
+      "homeAbbr": "FRA",
+      "awayAbbr": "IRQ",
+      "homeGoals": 3,
+      "awayGoals": 0,
+      "commenceTime": "2026-06-22T21:00:00Z"
+    },
+    {
+      "homeAbbr": "NOR",
+      "awayAbbr": "SEN",
+      "homeGoals": 3,
+      "awayGoals": 2,
+      "commenceTime": "2026-06-23T00:00:00Z"
+    },
+    {
+      "homeAbbr": "JOR",
+      "awayAbbr": "ALG",
+      "homeGoals": 1,
+      "awayGoals": 2,
+      "commenceTime": "2026-06-23T03:00:00Z"
+    },
+    {
+      "homeAbbr": "POR",
+      "awayAbbr": "UZB",
+      "homeGoals": 5,
+      "awayGoals": 0,
+      "commenceTime": "2026-06-23T17:00:00Z"
+    },
+    {
+      "homeAbbr": "ENG",
+      "awayAbbr": "GHA",
+      "homeGoals": 0,
+      "awayGoals": 0,
+      "commenceTime": "2026-06-23T20:00:00Z"
+    },
+    {
+      "homeAbbr": "PAN",
+      "awayAbbr": "CRO",
+      "homeGoals": 0,
+      "awayGoals": 1,
+      "commenceTime": "2026-06-23T23:00:00Z"
+    },
+    {
+      "homeAbbr": "COL",
+      "awayAbbr": "COD",
+      "homeGoals": 1,
+      "awayGoals": 0,
+      "commenceTime": "2026-06-24T02:00:00Z"
+    },
+    {
+      "homeAbbr": "BIH",
+      "awayAbbr": "QAT",
+      "homeGoals": 3,
+      "awayGoals": 1,
+      "commenceTime": "2026-06-24T19:00:00Z"
+    },
+    {
+      "homeAbbr": "SUI",
+      "awayAbbr": "CAN",
+      "homeGoals": 2,
+      "awayGoals": 1,
+      "commenceTime": "2026-06-24T19:00:00Z"
+    },
+    {
+      "homeAbbr": "MAR",
+      "awayAbbr": "HAI",
+      "homeGoals": 4,
+      "awayGoals": 2,
+      "commenceTime": "2026-06-24T22:00:00Z"
+    },
+    {
+      "homeAbbr": "SCO",
+      "awayAbbr": "BRA",
+      "homeGoals": 0,
+      "awayGoals": 3,
+      "commenceTime": "2026-06-24T22:01:00Z"
+    },
+    {
+      "homeAbbr": "CZE",
+      "awayAbbr": "MEX",
+      "homeGoals": 0,
+      "awayGoals": 3,
+      "commenceTime": "2026-06-25T01:00:00Z"
+    },
+    {
+      "homeAbbr": "RSA",
+      "awayAbbr": "KOR",
+      "homeGoals": 1,
+      "awayGoals": 0,
+      "commenceTime": "2026-06-25T01:00:00Z"
+    }
+  ],
+  "warnings": [
+    "已从 The Odds API 拉取 33 场比赛，识别出 14 场已完赛真实比分。",
+    "The Odds API 本月剩余额度：461 次请求。"
+  ]
+}

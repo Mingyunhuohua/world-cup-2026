@@ -3,6 +3,7 @@ import { readValue, writeAdapterOutput } from "./core.mjs";
 import { fifaFixturesAdapter, runFifaFixturesAdapter } from "./fifa-fixtures.mjs";
 import { fifaRankingsAdapter, runFifaRankingsAdapter } from "./fifa-rankings.mjs";
 import { injuriesNewsAdapter, runInjuriesNewsAdapter } from "./injuries-news.mjs";
+import { matchResultsAdapter, runMatchResultsAdapter } from "./match-results.mjs";
 import { newsSentimentAdapter, runNewsSentimentAdapter } from "./news-sentiment.mjs";
 import { oddsMarketAdapter, runOddsMarketAdapter } from "./odds-market.mjs";
 import { recentFormAdapter, runRecentFormAdapter } from "./recent-form.mjs";
@@ -19,6 +20,7 @@ Adapters:
   fifa-fixtures
   fifa-rankings
   injuries-news
+  match-results
   news-sentiment
   odds-market
   recent-form
@@ -28,6 +30,7 @@ export const adapterRegistry = [
   { ...fifaFixturesAdapter, run: runFifaFixturesAdapter },
   { ...fifaRankingsAdapter, run: runFifaRankingsAdapter },
   { ...injuriesNewsAdapter, run: runInjuriesNewsAdapter },
+  { ...matchResultsAdapter, run: runMatchResultsAdapter },
   { ...newsSentimentAdapter, run: runNewsSentimentAdapter },
   { ...oddsMarketAdapter, run: runOddsMarketAdapter },
   { ...recentFormAdapter, run: runRecentFormAdapter }

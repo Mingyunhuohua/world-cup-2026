@@ -1,5 +1,6 @@
-# 每4小时自动拉取一次The Odds API实时赔率并提交，配合托管平台的推送自动重新部署。
-name: Sync live odds
+# 每4小时自动拉取一次 The Odds API 的实时赔率与真实赛果并提交，
+# 配合托管平台的推送自动重新部署，使线上页面无需手动操作即可更新。
+name: Sync live data
 
 on:
   schedule:
@@ -25,10 +26,14 @@ jobs:
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
 
-      - name: Commit updated odds file
+      - run: npm run data:results:live
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+
+      - name: Commit updated live data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/data/odds-live.json
-          git diff --cached --quiet || git commit -m "chore: refresh live odds data"
+          git add public/data/odds-live.json public/data/results-live.json
+          git diff --cached --quiet || git commit -m "chore: refresh live odds and results data"
           git push

@@ -8,6 +8,7 @@
     "build": "node node_modules/typescript/bin/tsc --noEmit && node node_modules/vite/bin/vite.js build --base ./",
     "data:adapter": "node scripts/adapters/index.mjs",
     "data:odds:live": "node scripts/adapters/index.mjs --adapter odds-market --live --out public/data/odds-live.json",
+    "data:results:live": "node scripts/adapters/index.mjs --adapter match-results --live --out public/data/results-live.json",
     "data:compose": "node scripts/data-compose.mjs",
     "data:update": "node scripts/data-update.mjs",
     "preview": "node node_modules/vite/bin/vite.js preview --host 127.0.0.1",

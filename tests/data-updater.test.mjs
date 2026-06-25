@@ -317,10 +317,11 @@ test("数据源 adapter runner 能列出并运行 mock adapter", async () => {
 
   assert.equal(options.adapter, "fifa-rankings");
   assert.equal(options.file, "fixtures.html");
-  assert.equal(adapters.length, 6);
+  assert.equal(adapters.length, 7);
   assert.ok(adapters.some((adapter) => adapter.id === "news-sentiment"));
   assert.ok(adapters.some((adapter) => adapter.id === "odds-market"));
   assert.ok(adapters.some((adapter) => adapter.id === "recent-form"));
+  assert.ok(adapters.some((adapter) => adapter.id === "match-results"));
   assert.equal(rankings.adapter.id, "fifa-rankings");
   assert.ok(rankings.teamPatches.length > 0);
   assert.ok(fixtures.fixtures.length > 0);

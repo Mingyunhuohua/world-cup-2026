@@ -451,8 +451,12 @@ function App() {
 
       applySnapshotImport(result.snapshot, result.summary);
       markLiveSignalApplied(result.appliedKey);
+      const resultsNote =
+        result.summary.importedResults > 0
+          ? `新增 ${result.summary.importedResults} 场赛果，`
+          : "";
       setLiveSignalStatus(
-        `已自动融合实时赔率与赛事内战绩，更新 ${result.summary.importedTeams} 支球队状态（${formatDateTime(new Date().toISOString())}）。`
+        `${resultsNote}已自动融合实时赔率与赛事内战绩，更新 ${result.summary.importedTeams} 支球队状态（${formatDateTime(new Date().toISOString())}）。`
       );
     }
 
