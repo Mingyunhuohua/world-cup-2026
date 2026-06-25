@@ -1,6 +1,6 @@
 {
   "label": "真实赛果 (live)",
-  "generatedAt": "2026-06-25T11:24:12.212Z",
+  "generatedAt": "2026-06-25T19:20:16.895Z",
   "adapter": {
     "id": "match-results",
     "label": "真实赛果",
@@ -10,13 +10,6 @@
     "notes": "可联网调用 The Odds API scores 接口拉取最近完赛比分，折算为按球队缩写标注的赛果。"
   },
   "completedResults": [
-    {
-      "homeAbbr": "ARG",
-      "awayAbbr": "AUT",
-      "homeGoals": 2,
-      "awayGoals": 0,
-      "commenceTime": "2026-06-22T17:00:00Z"
-    },
     {
       "homeAbbr": "FRA",
       "awayAbbr": "IRQ",
@@ -110,7 +103,7 @@
     }
   ],
   "warnings": [
-    "已从 The Odds API 拉取 33 场比赛，识别出 14 场已完赛真实比分。",
-    "The Odds API 本月剩余额度：461 次请求。"
+    "已从 The Odds API 拉取 33 场比赛，识别出 13 场已完赛真实比分。",
+    "The Odds API 本月剩余额度：456 次请求。"
   ]
 }
