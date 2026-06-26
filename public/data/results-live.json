@@ -1,6 +1,6 @@
 {
   "label": "真实赛果 (live)",
-  "generatedAt": "2026-06-26T11:16:02.506Z",
+  "generatedAt": "2026-06-26T12:26:38.666Z",
   "adapter": {
     "id": "match-results",
     "label": "真实赛果",
@@ -133,6 +133,6 @@
   "warnings": [
     "已从 The Odds API 拉取 32 场比赛，识别出 16 场已完赛真实比分。",
     "已与历史累积合并：累计 17 场（本次新窗口 16 场）。",
-    "The Odds API 本月剩余额度：448 次请求。"
+    "The Odds API 本月剩余额度：445 次请求。"
   ]
 }
