@@ -502,7 +502,7 @@ select {
 
 .prediction-layout {
   display: grid;
-  grid-template-columns: minmax(580px, 1.48fr) minmax(300px, 0.82fr);
+  grid-template-columns: minmax(0, 1.48fr) minmax(0, 0.82fr);
   gap: 16px;
   align-items: stretch;
   min-width: 0;
@@ -535,7 +535,7 @@ select {
 
 .operations-grid {
   display: grid;
-  grid-template-columns: minmax(520px, 1.25fr) minmax(360px, 0.82fr);
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.82fr);
   gap: 16px;
   align-items: start;
   min-width: 0;
@@ -1869,7 +1869,9 @@ select {
 
 .model-workspace {
   display: grid;
-  grid-template-columns: minmax(440px, 1.28fr) minmax(280px, 0.78fr);
+  /* 用 minmax(0, fr) 而非 minmax(固定px, fr)：避免固定最小宽度在窄容器/Safari
+     嵌套 Grid 下溢出，导致右列叠到相邻面板上。宽屏下计算结果与原比例一致。 */
+  grid-template-columns: minmax(0, 1.28fr) minmax(0, 0.78fr);
   gap: 14px;
   align-items: start;
   min-width: 0;
