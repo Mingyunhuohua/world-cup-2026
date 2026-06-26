@@ -13,6 +13,7 @@ import { ModelEvaluationPanel } from "./components/ModelEvaluationPanel.tsx";
 import { SimulationTable } from "./components/SimulationTable.tsx";
 import { TeamPowerBoard } from "./components/TeamPowerBoard.tsx";
 import { WeightRadar } from "./components/WeightRadar.tsx";
+import { WorldCupHero } from "./components/WorldCupHero.tsx";
 import {
   clearImportHistory,
   clearRuntimeSnapshot,
@@ -931,6 +932,7 @@ function App() {
               />
             ) : null}
             <WeightRadar config={config} />
+            <WorldCupHero teamCount={teams.length} />
           </div>
           <div className="operations-secondary">
             <ModelAuditPanel
