@@ -307,7 +307,7 @@ select {
 
 .dashboard-overview {
   display: grid;
-  grid-template-columns: minmax(230px, 0.34fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0.34fr) minmax(0, 1fr);
   gap: 16px;
   align-items: stretch;
   margin-bottom: 18px;
@@ -679,7 +679,7 @@ select {
 
 .standings__row {
   display: grid;
-  grid-template-columns: minmax(88px, 1fr) 50px 44px 58px;
+  grid-template-columns: minmax(0, 1fr) 50px 44px 58px;
   align-items: center;
   gap: 7px;
   min-height: 42px;
@@ -1052,7 +1052,7 @@ select {
 
 .match-overview {
   display: grid;
-  grid-template-columns: minmax(280px, 0.92fr) minmax(260px, 1fr);
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
   gap: 14px;
   align-items: stretch;
   margin-bottom: 18px;
@@ -1562,7 +1562,7 @@ select {
 
 .contender-row {
   display: grid;
-  grid-template-columns: minmax(96px, 0.42fr) minmax(90px, 1fr) auto;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr) auto;
   align-items: center;
   gap: 8px;
   min-width: 0;
@@ -2986,7 +2986,7 @@ select {
 
 .update-workflow {
   display: grid;
-  grid-template-columns: minmax(520px, 1.34fr) minmax(340px, 0.78fr);
+  grid-template-columns: minmax(0, 1.34fr) minmax(0, 0.78fr);
   gap: 14px;
   align-items: start;
   margin-bottom: 14px;
@@ -3568,7 +3568,7 @@ select {
 
 .import-panel {
   display: grid;
-  grid-template-columns: minmax(340px, 1fr) minmax(230px, 0.42fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.42fr);
   gap: 12px;
   margin-bottom: 0;
 }
@@ -3707,7 +3707,7 @@ select {
 
 .preview-audit {
   display: grid;
-  grid-template-columns: minmax(230px, 0.52fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0.52fr) minmax(0, 1fr);
   gap: 10px;
   margin-bottom: 12px;
   padding: 10px;
@@ -4170,7 +4170,7 @@ select {
 
 .compose-guide {
   display: grid;
-  grid-template-columns: minmax(320px, 0.9fr) minmax(420px, 1.1fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: 12px;
   margin-bottom: 0;
 }
@@ -4417,7 +4417,7 @@ select {
 
 .update-grid {
   display: grid;
-  grid-template-columns: minmax(320px, 0.95fr) minmax(420px, 1.2fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.2fr);
   gap: 16px;
 }
 
@@ -4751,7 +4751,7 @@ select {
 
 .table-toolbar {
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) auto auto auto;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
   gap: 10px;
   align-items: end;
   margin-bottom: 12px;
@@ -5047,7 +5047,7 @@ td {
 }
 
 .round-path--expanded {
-  grid-template-columns: repeat(6, minmax(42px, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 8px;
   height: 104px;
   min-width: 0;
