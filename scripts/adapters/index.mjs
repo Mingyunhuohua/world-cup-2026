@@ -44,6 +44,7 @@ export function parseAdapterArgs(argv) {
     print: false,
     list: false,
     live: false,
+    merge: false,
     generatedAt: undefined,
     help: false
   };
@@ -82,6 +83,11 @@ export function parseAdapterArgs(argv) {
 
     if (arg === "--live") {
       options.live = true;
+      continue;
+    }
+
+    if (arg === "--merge") {
+      options.merge = true;
       continue;
     }
 
@@ -139,7 +145,9 @@ export async function runCli(argv = process.argv.slice(2)) {
   const payload = await runAdapter(options.adapter, {
     file: options.file,
     generatedAt: options.generatedAt,
-    live: options.live
+    live: options.live,
+    // --merge 时把输出文件本身作为历史来源读入，合并后写回，实现累积不丢数据。
+    mergeFrom: options.merge ? options.out : undefined
   });
 
   await writeAdapterOutput(payload, options);

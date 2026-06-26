@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import { loadEnvFile } from "../load-env.mjs";
 import { ODDS_API_TEAM_NAME_TO_ABBR } from "./team-name-map.mjs";
 
@@ -42,8 +44,20 @@ export async function runMatchResultsAdapter(options = {}) {
   }
 
   const games = await response.json();
-  const { completedResults, warnings } = buildCompletedResults(games);
+  const { completedResults: freshResults, warnings } = buildCompletedResults(games);
   const requestsRemaining = response.headers.get("x-requests-remaining");
+
+  // The Odds API 的比分接口只返回最近 3 天完赛的比赛。若每次都直接覆盖输出文件，
+  // 3 天前踢过的比赛会从结果里"掉出去"，导致新访客看到的赛果不完整。
+  // 因此在 --merge 模式下，把本次拉到的新赛果合并进已有的累积文件，老赛果永久保留。
+  const existingResults = options.mergeFrom
+    ? await readExistingResults(options.mergeFrom)
+    : [];
+  const completedResults = mergeCompletedResults(existingResults, freshResults);
+  const mergeNote =
+    options.mergeFrom && existingResults.length > 0
+      ? `已与历史累积合并：累计 ${completedResults.length} 场（本次新窗口 ${freshResults.length} 场）。`
+      : undefined;
 
   return {
     label: `${matchResultsAdapter.label} (live)`,
@@ -51,11 +65,45 @@ export async function runMatchResultsAdapter(options = {}) {
     adapter: { ...matchResultsAdapter, mode: "live", sourceUrl: SCORES_API_BASE_URL },
     completedResults,
     warnings: [
-      `已从 The Odds API 拉取 ${games.length} 场比赛，识别出 ${completedResults.length} 场已完赛真实比分。`,
+      `已从 The Odds API 拉取 ${games.length} 场比赛，识别出 ${freshResults.length} 场已完赛真实比分。`,
+      mergeNote,
       requestsRemaining ? `The Odds API 本月剩余额度：${requestsRemaining} 次请求。` : undefined,
       ...warnings
     ].filter(Boolean)
   };
+}
+
+async function readExistingResults(path) {
+  try {
+    const text = await readFile(resolve(path), "utf8");
+    const payload = JSON.parse(text);
+    return Array.isArray(payload.completedResults) ? payload.completedResults : [];
+  } catch {
+    // 文件不存在或损坏时按"无历史"处理，本次拉取的结果就是全部。
+    return [];
+  }
+}
+
+// 以"球队对 + 比赛日期"为键合并：同一场比赛被重复拉到时用最新比分覆盖（可修正比分），
+// 历史上记录过但已掉出 3 天窗口的比赛会被保留，从而实现永久累积、不丢数据。
+export function mergeCompletedResults(existing, fresh) {
+  const keyOf = (result) => {
+    const pair = [result.homeAbbr, result.awayAbbr].slice().sort().join("|");
+    const day = result.commenceTime ? String(result.commenceTime).slice(0, 10) : "";
+    return `${pair}|${day}`;
+  };
+
+  const byKey = new Map();
+  for (const result of existing ?? []) {
+    byKey.set(keyOf(result), result);
+  }
+  for (const result of fresh ?? []) {
+    byKey.set(keyOf(result), result);
+  }
+
+  return [...byKey.values()].sort((a, b) =>
+    String(a.commenceTime ?? "").localeCompare(String(b.commenceTime ?? ""))
+  );
 }
 
 export function buildCompletedResults(games) {
