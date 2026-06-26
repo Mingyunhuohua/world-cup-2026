@@ -2033,7 +2033,10 @@ select {
 }
 
 .model-control input[type="range"] {
+  display: block;
   width: 100%;
+  height: 24px;
+  margin: 0;
   accent-color: var(--green);
 }
 
