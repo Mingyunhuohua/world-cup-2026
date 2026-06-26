@@ -12,6 +12,7 @@ import { ModelControlPanel } from "./components/ModelControlPanel.tsx";
 import { ModelEvaluationPanel } from "./components/ModelEvaluationPanel.tsx";
 import { SimulationTable } from "./components/SimulationTable.tsx";
 import { TeamPowerBoard } from "./components/TeamPowerBoard.tsx";
+import { WeightRadar } from "./components/WeightRadar.tsx";
 import {
   clearImportHistory,
   clearRuntimeSnapshot,
@@ -929,6 +930,7 @@ function App() {
                 teamsById={teamsById}
               />
             ) : null}
+            <WeightRadar config={config} />
           </div>
           <div className="operations-secondary">
             <ModelAuditPanel
