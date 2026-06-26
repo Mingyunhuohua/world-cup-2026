@@ -2415,15 +2415,22 @@ select {
      嵌套 Grid 下溢出，导致右列叠到相邻面板上。宽屏下计算结果与原比例一致。 */
   grid-template-columns: minmax(0, 1.28fr) minmax(0, 0.78fr);
   gap: 14px;
-  align-items: start;
+  align-items: stretch;
   min-width: 0;
 }
 
 .model-workspace__main,
 .model-workspace__side {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
   min-width: 0;
+}
+
+/* 较矮的一列末尾卡片弹性撑满，使滑块列与说明卡列底部严格对齐。 */
+.model-workspace__main > :last-child,
+.model-workspace__side > :last-child {
+  flex: 1 1 auto;
 }
 
 .model-status-grid {
