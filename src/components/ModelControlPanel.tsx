@@ -383,6 +383,60 @@ export function ModelControlPanel({
               </li>
             </ul>
           </section>
+
+          <section className="model-section model-section--pipeline">
+            <ModelSectionHeader
+              description="一次预测是怎么算出来的。"
+              title="模型管线"
+            />
+            <ol className="model-pipeline">
+              <li className="model-pipeline__step">
+                <span className="model-pipeline__node">
+                  <Icon name="database" size={15} />
+                </span>
+                <div>
+                  <strong>真实数据接入</strong>
+                  <p>赛果、排名、赔率、近期战绩</p>
+                </div>
+              </li>
+              <li className="model-pipeline__step">
+                <span className="model-pipeline__node">
+                  <Icon name="gauge" size={15} />
+                </span>
+                <div>
+                  <strong>单场泊松比分</strong>
+                  <p>用进球期望算出每个比分的概率</p>
+                </div>
+              </li>
+              <li className="model-pipeline__step">
+                <span className="model-pipeline__node">
+                  <Icon name="refresh" size={15} />
+                </span>
+                <div>
+                  <strong>蒙特卡洛 ×1万</strong>
+                  <p>把整届赛事重复模拟一万次</p>
+                </div>
+              </li>
+              <li className="model-pipeline__step">
+                <span className="model-pipeline__node">
+                  <Icon name="git" size={15} />
+                </span>
+                <div>
+                  <strong>官方晋级规则</strong>
+                  <p>按 FIFA 2026 真实对位推进淘汰赛</p>
+                </div>
+              </li>
+              <li className="model-pipeline__step">
+                <span className="model-pipeline__node model-pipeline__node--gold">
+                  <Icon name="trophy" size={15} />
+                </span>
+                <div>
+                  <strong>冠军 / 晋级概率</strong>
+                  <p>统计每队各轮的晋级与夺冠概率</p>
+                </div>
+              </li>
+            </ol>
+          </section>
         </aside>
       </div>
     </section>

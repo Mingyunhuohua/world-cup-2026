@@ -612,6 +612,71 @@ select:disabled {
   line-height: 1.45;
 }
 
+/* 模型管线作为右列末尾卡片，弹性撑满高窄空白；节点等距铺开。 */
+.model-section--pipeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.model-pipeline {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 220px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.model-pipeline::before {
+  content: "";
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 15px;
+  width: 2px;
+  background: var(--line);
+}
+
+.model-pipeline__step {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.model-pipeline__node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--green-dark);
+  background: #e9f4ee;
+}
+
+.model-pipeline__node--gold {
+  color: #fff;
+  background: var(--gold);
+}
+
+.model-pipeline__step strong {
+  display: block;
+  font-size: 13px;
+}
+
+.model-pipeline__step p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .scoring-leaders {
   display: grid;
   gap: 11px;
