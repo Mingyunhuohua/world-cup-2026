@@ -31,6 +31,7 @@ import type {
 } from "../types.ts";
 import { formatDateTime, percent } from "../utils/format.ts";
 import { Icon } from "./Icon.tsx";
+import { ScoringLeaders } from "./ScoringLeaders.tsx";
 import { TournamentProgress } from "./TournamentProgress.tsx";
 
 type DataUpdateCenterProps = {
@@ -566,6 +567,7 @@ export function DataUpdateCenter({
           </section>
 
           <TournamentProgress snapshot={snapshot} />
+          <ScoringLeaders snapshot={snapshot} />
         </div>
 
         <aside className="update-workflow__side">

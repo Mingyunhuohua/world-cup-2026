@@ -347,6 +347,42 @@ export function ModelControlPanel({
               </div>
             </div>
           </section>
+
+          <section className="model-section model-section--guide">
+            <ModelSectionHeader
+              description="不懂模型也能看明白的三点。"
+              title="模型读法"
+            />
+            <ul className="model-guide">
+              <li>
+                <span className="model-guide__icon">
+                  <Icon name="gauge" size={15} />
+                </span>
+                <div>
+                  <strong>概率高 ≠ 一定赢</strong>
+                  <p>数字越高代表模型越看好，但足球偶然性大，冷门常有。</p>
+                </div>
+              </li>
+              <li>
+                <span className="model-guide__icon">
+                  <Icon name="activity" size={15} />
+                </span>
+                <div>
+                  <strong>热力图看最可能比分</strong>
+                  <p>比分热力图里颜色越深的格子，越可能是最终比分。</p>
+                </div>
+              </li>
+              <li>
+                <span className="model-guide__icon">
+                  <Icon name="trending" size={15} />
+                </span>
+                <div>
+                  <strong>拖滑块看模型偏好</strong>
+                  <p>调整左侧权重，可看模型在“更看重实力还是状态”间如何变化。</p>
+                </div>
+              </li>
+            </ul>
+          </section>
         </aside>
       </div>
     </section>
