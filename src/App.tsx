@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { BracketPreview } from "./components/BracketPreview.tsx";
+import { ChampionRace } from "./components/ChampionRace.tsx";
 import { DataSourcePanel } from "./components/DataSourcePanel.tsx";
 import { DataUpdateCenter } from "./components/DataUpdateCenter.tsx";
 import { GroupBoard } from "./components/GroupBoard.tsx";
 import { Icon } from "./components/Icon.tsx";
+import { LatestResultsWall } from "./components/LatestResultsWall.tsx";
 import { MatchPredictionCard } from "./components/MatchPredictionCard.tsx";
 import { ModelAuditPanel } from "./components/ModelAuditPanel.tsx";
 import { ModelControlPanel } from "./components/ModelControlPanel.tsx";
@@ -640,6 +642,7 @@ function App() {
           <span>冠军概率领先</span>
           <strong>{topChampionTeam?.name ?? "暂无球队"}</strong>
           <em>{topChampion ? (topChampion.champion * 100).toFixed(1) : "0.0"}%</em>
+          <ChampionRace simulation={simulation} teamsById={teamsById} />
         </div>
       </aside>
 
@@ -799,6 +802,8 @@ function App() {
             </div>
           </section>
         </div>
+
+        <LatestResultsWall fixtures={fixtures} teamsById={teamsById} />
 
         <div className="prediction-layout">
           <div className="left-column">
