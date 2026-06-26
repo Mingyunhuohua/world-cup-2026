@@ -913,41 +913,49 @@ function App() {
         </div>
 
         <div className="operations-grid" aria-label="模型与数据工作区">
-          <div className="operations-primary">
-            {selectedMatch ? (
-              <ModelControlPanel
-                config={config}
-                hasPersistedConfig={hasPersistedModelConfig}
-                message={modelConfigMessage}
-                onConfigChange={updateConfig}
-                onConfigClear={clearPersistedConfig}
-                onConfigExport={exportConfig}
-                onConfigImport={importConfigText}
-                onConfigSave={persistConfig}
-                onPresetChange={applyPreset}
-                onReset={resetConfig}
-                savedAt={modelConfigSavedAt}
-                selectedMatch={selectedMatch}
+          <div className="ops-band">
+            <div className="ops-col">
+              {selectedMatch ? (
+                <ModelControlPanel
+                  config={config}
+                  hasPersistedConfig={hasPersistedModelConfig}
+                  message={modelConfigMessage}
+                  onConfigChange={updateConfig}
+                  onConfigClear={clearPersistedConfig}
+                  onConfigExport={exportConfig}
+                  onConfigImport={importConfigText}
+                  onConfigSave={persistConfig}
+                  onPresetChange={applyPreset}
+                  onReset={resetConfig}
+                  savedAt={modelConfigSavedAt}
+                  selectedMatch={selectedMatch}
+                  teamsById={teamsById}
+                />
+              ) : null}
+              <WeightRadar config={config} />
+            </div>
+            <div className="ops-col">
+              <ModelAuditPanel
+                modelConfig={config}
+                simulation={simulation}
+                snapshot={snapshot}
+              />
+              <ModelEvaluationPanel
+                calibration={modelCalibration}
+                evaluation={modelEvaluation}
+                fixtures={fixtures}
+                onPresetApply={applyPreset}
                 teamsById={teamsById}
               />
-            ) : null}
-            <WeightRadar config={config} />
-            <WorldCupHero teamCount={teams.length} />
+            </div>
           </div>
-          <div className="operations-secondary">
-            <ModelAuditPanel
-              modelConfig={config}
-              simulation={simulation}
-              snapshot={snapshot}
-            />
-            <ModelEvaluationPanel
-              calibration={modelCalibration}
-              evaluation={modelEvaluation}
-              fixtures={fixtures}
-              onPresetApply={applyPreset}
-              teamsById={teamsById}
-            />
-            <DataSourcePanel snapshot={snapshot} />
+          <div className="ops-band">
+            <div className="ops-col">
+              <WorldCupHero teamCount={teams.length} />
+            </div>
+            <div className="ops-col">
+              <DataSourcePanel snapshot={snapshot} />
+            </div>
           </div>
         </div>
 

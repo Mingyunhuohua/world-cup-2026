@@ -915,9 +915,7 @@ select {
 }
 
 .left-column,
-.main-column,
-.operations-primary,
-.operations-secondary {
+.main-column {
   display: grid;
   gap: 14px;
   min-width: 0;
@@ -927,24 +925,37 @@ select {
   margin-top: 16px;
 }
 
+/* operations-grid 改为纵向堆叠的若干"对齐带"。每个带是左右两列，
+   两列等高(align-items: stretch)，且每列末尾面板弹性撑满 —— 这样
+   带内左右两块面板的底端严格对齐（权重雷达=赛果校准、插图=数据源），
+   且数据变化导致高度变化时仍自动保持齐平。 */
 .operations-grid {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+  margin-top: 16px;
+}
+
+.ops-band {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.82fr);
   gap: 16px;
   align-items: stretch;
   min-width: 0;
-  margin-top: 16px;
 }
 
-/* 左列改用弹性纵向布局，让末尾的世界杯插图撑满剩余高度，
-   使左列底线与右列（更高的那一列）严格齐平。 */
-.operations-primary {
+.ops-col {
   display: flex;
   flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.ops-col > :last-child {
+  flex: 1 1 auto;
 }
 
 .world-cup-hero {
-  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5901,7 +5912,7 @@ td {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .operations-grid {
+  .ops-band {
     grid-template-columns: 1fr;
   }
 
@@ -6027,7 +6038,7 @@ td {
     .import-impact__grid,
     .import-preview__grid,
     .preview-audit__tiles,
-    .operations-grid,
+    .ops-band,
     .prediction-layout,
     .daily-workflow__grid,
     .daily-workflow__impact,
