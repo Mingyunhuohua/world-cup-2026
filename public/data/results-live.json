@@ -1,6 +1,6 @@
 {
   "label": "真实赛果 (live)",
-  "generatedAt": "2026-06-26T21:09:15.466Z",
+  "generatedAt": "2026-06-27T09:18:53.452Z",
   "adapter": {
     "id": "match-results",
     "label": "真实赛果",
@@ -142,11 +142,39 @@
       "homeGoals": 5,
       "awayGoals": 0,
       "commenceTime": "2026-06-26T19:02:00Z"
+    },
+    {
+      "homeAbbr": "CPV",
+      "awayAbbr": "KSA",
+      "homeGoals": 0,
+      "awayGoals": 0,
+      "commenceTime": "2026-06-27T00:01:00Z"
+    },
+    {
+      "homeAbbr": "URU",
+      "awayAbbr": "ESP",
+      "homeGoals": 0,
+      "awayGoals": 1,
+      "commenceTime": "2026-06-27T00:01:00Z"
+    },
+    {
+      "homeAbbr": "EGY",
+      "awayAbbr": "IRN",
+      "homeGoals": 1,
+      "awayGoals": 1,
+      "commenceTime": "2026-06-27T03:00:00Z"
+    },
+    {
+      "homeAbbr": "NZL",
+      "awayAbbr": "BEL",
+      "homeGoals": 1,
+      "awayGoals": 5,
+      "commenceTime": "2026-06-27T03:01:00Z"
     }
   ],
   "warnings": [
-    "已从 The Odds API 拉取 31 场比赛，识别出 16 场已完赛真实比分。",
-    "已与历史累积合并：累计 19 场（本次新窗口 16 场）。",
-    "The Odds API 本月剩余额度：440 次请求。"
+    "已从 The Odds API 拉取 33 场比赛，识别出 18 场已完赛真实比分。",
+    "已与历史累积合并：累计 23 场（本次新窗口 18 场）。",
+    "The Odds API 本月剩余额度：434 次请求。"
   ]
 }
