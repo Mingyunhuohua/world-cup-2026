@@ -1,6 +1,6 @@
 {
   "label": "赔率市场 (live)",
-  "generatedAt": "2026-06-27T15:55:09.708Z",
+  "generatedAt": "2026-06-27T20:17:30.051Z",
   "adapter": {
     "id": "odds-market",
     "label": "赔率市场",
@@ -14,11 +14,11 @@
   "teamPatches": [
     {
       "abbr": "CRO",
-      "form": 0.084
+      "form": 0.1
     },
     {
       "abbr": "GHA",
-      "form": -0.073
+      "form": -0.079
     },
     {
       "abbr": "PAN",
@@ -30,31 +30,31 @@
     },
     {
       "abbr": "COL",
-      "form": -0.034
+      "form": -0.025
     },
     {
       "abbr": "POR",
-      "form": 0.076
+      "form": 0.068
     },
     {
       "abbr": "COD",
-      "form": 0.117
+      "form": 0.113
     },
     {
       "abbr": "UZB",
-      "form": -0.073
+      "form": -0.072
     },
     {
       "abbr": "ALG",
-      "form": -0.043
+      "form": -0.031
     },
     {
       "abbr": "AUT",
-      "form": -0.018
+      "form": -0.036
     },
     {
       "abbr": "JOR",
-      "form": -0.142
+      "form": -0.143
     },
     {
       "abbr": "ARG",
@@ -70,7 +70,7 @@
     },
     {
       "abbr": "BRA",
-      "form": 0.116
+      "form": 0.117
     },
     {
       "abbr": "JPN",
@@ -94,11 +94,11 @@
     },
     {
       "abbr": "CIV",
-      "form": -0.041
+      "form": -0.035
     },
     {
       "abbr": "NOR",
-      "form": 0.073
+      "form": 0.066
     },
     {
       "abbr": "FRA",
@@ -114,7 +114,7 @@
     },
     {
       "abbr": "BIH",
-      "form": -0.111
+      "form": -0.112
     },
     {
       "abbr": "AUS",
@@ -131,7 +131,7 @@
   ],
   "warnings": [
     "已从 The Odds API 拉取 15 场比赛的真实赔率，折算出 29 支球队的市场信号。",
-    "The Odds API 本月剩余额度：431 次请求。",
+    "The Odds API 本月剩余额度：428 次请求。",
     "赔率折算为相对中性的市场胜率信号（去除庄家抽水），用于调整 form；非官方夺冠赔率。"
   ]
 }
