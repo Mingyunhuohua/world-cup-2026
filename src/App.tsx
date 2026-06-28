@@ -495,6 +495,16 @@ function App() {
     SF: 3,
     FINAL: 4
   };
+  // 淘汰赛导航分区专用的赛程列表：R32 及已生成的后续轮次，按轮次排序。
+  const knockoutPanelFixtures = predictableFixtures
+    .filter((fixture) => fixture.round !== "GROUP")
+    .sort((a, b) => (knockoutRoundOrder[a.round] ?? 99) - (knockoutRoundOrder[b.round] ?? 99));
+  // 淘汰赛分区当前选中的比赛与预测（优先淘汰赛比赛，未选时取第一场淘汰赛）。
+  const knockoutSelectedMatch =
+    knockoutPanelFixtures.find((match) => match.id === selectedMatchId) ?? knockoutPanelFixtures[0];
+  const knockoutSelectedPrediction = knockoutSelectedMatch
+    ? predictionsByMatchId.get(knockoutSelectedMatch.id)
+    : undefined;
   const nextFixtures = isKnockoutView
     ? predictableFixtures
         .filter((fixture) => fixture.round !== "GROUP")
@@ -940,6 +950,88 @@ function App() {
         </div>
 
         <div className="section-anchor knockout-band" data-section-id="knockout" id="section-knockout">
+          <div className="prediction-layout knockout-prediction-layout">
+            <div className="left-column">
+              <section className="panel fixture-panel">
+                <div className="panel__header compact">
+                  <div>
+                    <span className="eyebrow">淘汰赛单场预测</span>
+                    <h2>32 强及后续轮次</h2>
+                  </div>
+                </div>
+                <div className="fixture-list">
+                  {knockoutPanelFixtures.map((fixture) => {
+                    const home = teamsById.get(fixture.homeTeamId);
+                    const away = teamsById.get(fixture.awayTeamId);
+                    const fixturePrediction = predictionsByMatchId.get(fixture.id);
+                    const score = fixture.result
+                      ? `${fixture.result.homeGoals}-${fixture.result.awayGoals}`
+                      : "vs";
+                    if (!home || !away) {
+                      return null;
+                    }
+                    return (
+                      <button
+                        aria-label={`选择比赛 ${home.name} 对 ${away.name}，${fixture.status === "completed" ? "已完赛" : "预测"}`}
+                        aria-pressed={fixture.id === knockoutSelectedMatch?.id}
+                        className={fixture.id === knockoutSelectedMatch?.id ? "is-active" : ""}
+                        key={fixture.id}
+                        onClick={() => setSelectedMatchId(fixture.id)}
+                        type="button"
+                      >
+                        <span className="fixture-card__meta">
+                          <span>
+                            {knockoutRoundLabel(fixture.round)} · {fixture.venue || "对阵待定"}
+                          </span>
+                          <em>{fixture.status === "completed" ? "已完赛" : "预测"}</em>
+                        </span>
+                        <span className="fixture-card__teams">
+                          <span>
+                            <i style={{ backgroundColor: home.color }} />
+                            {home.abbr}
+                          </span>
+                          <strong>{score}</strong>
+                          <span>
+                            <i style={{ backgroundColor: away.color }} />
+                            {away.abbr}
+                          </span>
+                        </span>
+                        {fixturePrediction ? (
+                          <span className="fixture-card__probabilities">
+                            <span>主 {percent(fixturePrediction.homeWin, 0)}</span>
+                            <span>平 {percent(fixturePrediction.draw, 0)}</span>
+                            <span>客 {percent(fixturePrediction.awayWin, 0)}</span>
+                          </span>
+                        ) : null}
+                      </button>
+                    );
+                  })}
+                  {knockoutPanelFixtures.length === 0 ? (
+                    <p className="panel-empty">淘汰赛对阵尚未生成（需小组赛全部完赛）。</p>
+                  ) : null}
+                </div>
+              </section>
+            </div>
+            <div className="main-column">
+              {knockoutSelectedMatch && knockoutSelectedPrediction ? (
+                <MatchPredictionCard
+                  match={knockoutSelectedMatch}
+                  prediction={knockoutSelectedPrediction}
+                  teamsById={teamsById}
+                />
+              ) : (
+                <section className="panel match-panel">
+                  <div className="panel__header">
+                    <div>
+                      <span className="eyebrow">选中比赛</span>
+                      <h2>暂无可预测比赛</h2>
+                    </div>
+                  </div>
+                  <p className="panel-empty">淘汰赛对阵尚未生成。</p>
+                </section>
+              )}
+            </div>
+          </div>
           <BracketPreview simulation={simulation} teamsById={teamsById} />
         </div>
 
