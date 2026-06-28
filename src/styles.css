@@ -1075,11 +1075,6 @@ select {
   min-width: 0;
 }
 
-/* 淘汰赛导航分区内的单场预测区：与下方晋级概率树之间留出间隔。 */
-.knockout-prediction-layout {
-  margin-bottom: 20px;
-}
-
 .main-column .match-panel {
   height: 100%;
 }
