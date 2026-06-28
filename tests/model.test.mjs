@@ -302,9 +302,8 @@ test("小组纪律扣分会转成淘汰赛停赛风险负荷", () => {
 });
 
 test("当前快照包含完整小组赛和已完赛比分", () => {
-  // 72 场小组赛 + 小组赛全部完赛后自动生成的 16 场 32 强对阵。
-  assert.equal(currentTournamentSnapshot.fixtures.length, 88);
-  assert.equal(currentTournamentSnapshot.completedMatches, 72);
+  assert.equal(currentTournamentSnapshot.fixtures.length, 72);
+  assert.equal(currentTournamentSnapshot.completedMatches, 28);
 
   const mexico = teams.find((team) => team.abbr === "MEX");
   const southAfrica = teams.find((team) => team.abbr === "RSA");
@@ -353,13 +352,13 @@ test("本地数据适配器返回赛程排名和动态占位流", async () => {
   const oddsFeed = report.feeds.find((feed) => feed.kind === "odds");
 
   assert.equal(report.qualityChecks.some((check) => check.level === "fail"), false);
-  assert.equal(fixturesFeed.records, 88);
+  assert.equal(fixturesFeed.records, 72);
   assert.equal(fixturesFeed.status, "ready");
   assert.equal(oddsFeed.status, "planned");
 });
 
 test("JSON 赛果导入会更新运行态快照并重算完赛数", () => {
-  const target = currentTournamentSnapshot.fixtures.find((fixture) => fixture.status !== "completed");
+  const target = fixtures.find((fixture) => fixture.status !== "completed");
   const result = importTournamentJson(
     JSON.stringify({
       results: [
@@ -381,7 +380,7 @@ test("JSON 赛果导入会更新运行态快照并重算完赛数", () => {
 });
 
 test("JSON 赛果导入会更新比赛纪律数据并影响公平竞赛分", () => {
-  const target = currentTournamentSnapshot.fixtures.find((fixture) => fixture.status !== "completed");
+  const target = fixtures.find((fixture) => fixture.status !== "completed");
   const result = importTournamentJson(
     JSON.stringify({
       results: [
@@ -448,7 +447,7 @@ test("JSON 球队补丁导入会更新排名状态和伤停字段", () => {
 });
 
 test("JSON 导入预检会列出比赛和球队字段变化", () => {
-  const target = currentTournamentSnapshot.fixtures.find((fixture) => fixture.status !== "completed");
+  const target = fixtures.find((fixture) => fixture.status !== "completed");
   const preview = previewTournamentImport(
     JSON.stringify({
       results: [
@@ -668,7 +667,7 @@ test("运行态快照可以保存、恢复、清空和序列化", () => {
 
   assert.ok(savedAt);
   assert.equal(loaded.restored, true);
-  assert.equal(loaded.snapshot.fixtures.length, 88);
+  assert.equal(loaded.snapshot.fixtures.length, 72);
   assert.equal(JSON.parse(serialized).id, currentTournamentSnapshot.id);
   assert.match(filename, /^world-cup-2026-snapshot-/);
 
@@ -719,7 +718,7 @@ test("导入历史会保存最近导入前快照并限制数量", () => {
   assert.equal(history.length, 5);
   assert.equal(history[0].id, "history-6");
   assert.equal(history.at(-1).id, "history-2");
-  assert.equal(history[0].snapshot.fixtures.length, 88);
+  assert.equal(history[0].snapshot.fixtures.length, 72);
 
   clearImportHistory(storage);
   assert.equal(loadImportHistory(storage).length, 0);
@@ -788,17 +787,11 @@ test("导入复盘历史会保存最近导入后摘要并限制数量", () => {
 
 test("导入预检到历史回滚链路会恢复导入前预测状态", () => {
   const storage = createMemoryStorage();
-  const targetMatch =
-    fixtures.find(
-      (fixture) =>
-        (fixture.homeTeamId === "mex" || fixture.awayTeamId === "mex") &&
-        fixture.status !== "completed"
-    ) ??
-    currentTournamentSnapshot.fixtures.find(
-      (fixture) =>
-        (fixture.homeTeamId === "mex" || fixture.awayTeamId === "mex") &&
-        fixture.status !== "completed"
-    );
+  const targetMatch = fixtures.find(
+    (fixture) =>
+      (fixture.homeTeamId === "mex" || fixture.awayTeamId === "mex") &&
+      fixture.status !== "completed"
+  );
   const mexicoBefore = currentTournamentSnapshot.teams.find((team) => team.id === "mex");
   const importText = JSON.stringify({
     label: "workflow smoke import",
@@ -867,8 +860,7 @@ test("导入预检到历史回滚链路会恢复导入前预测状态", () => {
 });
 
 test("导入模板会生成可用的赛果和赛程 JSON", () => {
-  // 小组赛全部完赛后，从未完赛的淘汰赛对阵中取一场作为模板目标。
-  const target = currentTournamentSnapshot.fixtures.find((fixture) => fixture.status !== "completed");
+  const target = fixtures.find((fixture) => fixture.status !== "completed");
   const resultTemplate = JSON.parse(buildResultImportTemplate(target));
   const fixtureTemplate = JSON.parse(buildFixturePatchTemplate(target));
   const bulkTemplate = JSON.parse(buildBulkResultsTemplate(currentTournamentSnapshot, 2));

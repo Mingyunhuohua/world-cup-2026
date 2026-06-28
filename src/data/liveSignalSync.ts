@@ -1,5 +1,4 @@
 import type { DataImportSummary, Match, TournamentSnapshot } from "../types.ts";
-import { buildKnockoutFixtures } from "../model/knockoutFixtures.ts";
 import { previewTournamentImport } from "./importPreview.ts";
 import { deriveRecentFormSignals } from "./recentFormSignal.ts";
 
@@ -97,21 +96,7 @@ export async function checkLiveSignalUpdate(
     return undefined;
   }
 
-  // 赛果更新后用最新比分重新推导淘汰赛对阵：上一轮新完赛会催生下一轮对阵，
-  // 旧的非 GROUP fixtures 全部丢弃后由 buildKnockoutFixtures 重算，保证幂等。
-  const groupFixtures = preview.snapshot.fixtures.filter((match) => match.round === "GROUP");
-  const regeneratedKnockout = buildKnockoutFixtures(groupFixtures, preview.snapshot.teams);
-  const regeneratedSnapshot: TournamentSnapshot = {
-    ...preview.snapshot,
-    fixtures: [...groupFixtures, ...regeneratedKnockout],
-    completedMatches: [...groupFixtures, ...regeneratedKnockout].filter(
-      (match) => match.status === "completed"
-    ).length,
-    scheduledMatches: 0
-  };
-  regeneratedSnapshot.scheduledMatches = regeneratedSnapshot.fixtures.length - regeneratedSnapshot.completedMatches;
-
-  return { snapshot: regeneratedSnapshot, summary: preview.summary, appliedKey };
+  return { snapshot: preview.snapshot, summary: preview.summary, appliedKey };
 }
 
 // 按球队缩写对（不分主客顺序）把外部真实赛果匹配到内部赛程 ID，

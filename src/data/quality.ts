@@ -49,16 +49,14 @@ export function validateTournamentSnapshot(snapshot: TournamentSnapshot): DataQu
       : "分组结构异常会导致小组排名和最佳第三名逻辑失真。"
   });
 
-  // 只统计小组赛场次（淘汰赛对阵由小组排名动态推导，不计入此检查）。
-  const groupFixtureCount = snapshot.fixtures.filter((fixture) => fixture.round === "GROUP").length;
   checks.push({
     id: "group-fixture-count",
     label: "小组赛赛程",
-    level: groupFixtureCount === expectedGroupFixtureCount ? "pass" : "fail",
-    actual: groupFixtureCount,
+    level: snapshot.fixtures.length === expectedGroupFixtureCount ? "pass" : "fail",
+    actual: snapshot.fixtures.length,
     expected: expectedGroupFixtureCount,
     detail:
-      groupFixtureCount === expectedGroupFixtureCount
+      snapshot.fixtures.length === expectedGroupFixtureCount
         ? "72 场小组赛已覆盖。"
         : "小组赛场次缺失或重复会直接影响蒙特卡洛路径。"
   });

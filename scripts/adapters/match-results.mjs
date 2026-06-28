@@ -36,10 +36,6 @@ export async function runMatchResultsAdapter(options = {}) {
     );
   }
 
-  // The Odds API scores 接口 daysFrom 上限为 3（设为更大值会返回
-  // INVALID_SCORES_DAYS_FROM）。因此只能依赖 --merge 累积：GitHub Actions 每 4
-  // 小时跑一次，3 天窗口足够覆盖每场比赛完赛后的若干次拉取。若 CI 曾中断导致
-  // 历史赛果掉窗，需手工补录到 fixtures.ts。
   const url = `${SCORES_API_BASE_URL}?apiKey=${encodeURIComponent(apiKey)}&daysFrom=3`;
   const response = await fetch(url);
   if (!response.ok) {
