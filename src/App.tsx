@@ -121,6 +121,18 @@ function formatFixtureDate(value: string): string {
   return Number.isFinite(Date.parse(value)) ? formatDateTime(value) : "时间待定";
 }
 
+const KNOCKOUT_ROUND_LABELS: Record<string, string> = {
+  R32: "32强",
+  R16: "16强",
+  QF: "8强",
+  SF: "半决赛",
+  FINAL: "决赛"
+};
+
+function knockoutRoundLabel(round: string): string {
+  return KNOCKOUT_ROUND_LABELS[round] ?? "淘汰赛";
+}
+
 function getOutcomeLead(prediction: PredictionResult, home: Team, away: Team) {
   const outcomes = [
     { label: `${home.abbr} 胜`, value: prediction.homeWin },
@@ -475,9 +487,22 @@ function App() {
 
   const topChampion = simulation.teams[0];
   const topChampionTeam = topChampion ? teamsById.get(topChampion.teamId) : undefined;
-  const nextFixtures = predictableFixtures
-    .filter((fixture) => fixture.group === activeGroup)
-    .slice(0, 6);
+  const isKnockoutView = activeGroup === "淘汰赛";
+  const knockoutRoundOrder: Record<string, number> = {
+    R32: 0,
+    R16: 1,
+    QF: 2,
+    SF: 3,
+    FINAL: 4
+  };
+  const nextFixtures = isKnockoutView
+    ? predictableFixtures
+        .filter((fixture) => fixture.round !== "GROUP")
+        .sort((a, b) => (knockoutRoundOrder[a.round] ?? 99) - (knockoutRoundOrder[b.round] ?? 99))
+        .slice(0, 16)
+    : predictableFixtures
+        .filter((fixture) => fixture.group === activeGroup)
+        .slice(0, 6);
   const simulationProgressPercent = Math.round(simulationRun.progress * 100);
   const canCancelSimulation =
     simulationRun.status === "running" && simulationRun.source === "worker";
@@ -826,7 +851,7 @@ function App() {
               <div className="panel__header compact">
                 <div>
                   <span className="eyebrow">赛程</span>
-                  <h2>{activeGroup} 组比赛</h2>
+                  <h2>{isKnockoutView ? "淘汰赛对阵" : `${activeGroup} 组比赛`}</h2>
                 </div>
               </div>
               <div className="fixture-list">
@@ -852,7 +877,9 @@ function App() {
                     >
                       <span className="fixture-card__meta">
                         <span>
-                          MD {fixture.matchday ?? "-"} · {formatFixtureDate(fixture.date)}
+                          {fixture.round === "GROUP"
+                            ? `MD ${fixture.matchday ?? "-"} · ${formatFixtureDate(fixture.date)}`
+                            : `${knockoutRoundLabel(fixture.round)} · ${fixture.venue || "对阵待定"}`}
                         </span>
                         <em>{fixture.status === "completed" ? "已完赛" : "预测"}</em>
                       </span>
@@ -879,7 +906,11 @@ function App() {
                   );
                 })}
                 {nextFixtures.length === 0 ? (
-                  <p className="panel-empty">当前小组没有可预测比赛。</p>
+                  <p className="panel-empty">
+                    {isKnockoutView
+                      ? "淘汰赛对阵尚未生成（需小组赛全部完赛）。"
+                      : "当前小组没有可预测比赛。"}
+                  </p>
                 ) : null}
               </div>
             </section>

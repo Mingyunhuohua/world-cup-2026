@@ -6,3 +6,5 @@ imports/generated/
 .claude/
 .env
 .env.local
+# Windows 误产物（重定向到 nul 失败时生成的空文件）
+nul

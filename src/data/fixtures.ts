@@ -162,8 +162,16 @@ const specs: FixtureSpec[] = [
     awayGoals: 1,
     source: resultFallbackSource
   }),
-  fixtureSpec("G-1-1", "G", 1, "2026-06-21T19:00:00Z", "Los Angeles Stadium", "BEL", "IRN"),
-  fixtureSpec("G-1-2", "G", 1, "2026-06-22T01:00:00Z", "Vancouver Stadium", "NZL", "EGY"),
+  fixtureSpec("G-1-1", "G", 1, "2026-06-21T19:00:00Z", "Los Angeles Stadium", "BEL", "IRN", {
+    homeGoals: 2,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("G-1-2", "G", 1, "2026-06-22T01:00:00Z", "Vancouver Stadium", "NZL", "EGY", {
+    homeGoals: 0,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
   fixtureSpec("H-1-1", "H", 1, "2026-06-15T17:00:00Z", "Atlanta Stadium", "ESP", "CPV", {
     homeGoals: 0,
     awayGoals: 0,
@@ -245,49 +253,217 @@ const specs: FixtureSpec[] = [
     awayGoals: 1,
     source: resultFallbackSource
   }),
-  fixtureSpec("D-2-1", "D", 2, "2026-06-21T01:00:00Z", "Seattle Stadium", "AUS", "PAR"),
-  fixtureSpec("D-2-2", "D", 2, "2026-06-21T22:00:00Z", "Philadelphia Stadium", "USA", "TUR"),
-  fixtureSpec("E-2-1", "E", 2, "2026-06-21T19:00:00Z", "Dallas Stadium", "GER", "CIV"),
-  fixtureSpec("E-2-2", "E", 2, "2026-06-22T01:00:00Z", "Vancouver Stadium", "ECU", "CUW"),
-  fixtureSpec("F-2-1", "F", 2, "2026-06-22T01:00:00Z", "New York New Jersey Stadium", "NED", "SWE"),
-  fixtureSpec("F-2-2", "F", 2, "2026-06-22T22:00:00Z", "Mexico City Stadium", "TUN", "JPN"),
-  fixtureSpec("G-2-1", "G", 2, "2026-06-22T19:00:00Z", "Houston Stadium", "BEL", "NZL"),
-  fixtureSpec("G-2-2", "G", 2, "2026-06-23T01:00:00Z", "Los Angeles Stadium", "EGY", "IRN"),
-  fixtureSpec("H-2-1", "H", 2, "2026-06-23T19:00:00Z", "Miami Stadium", "URU", "CPV"),
-  fixtureSpec("H-2-2", "H", 2, "2026-06-23T22:00:00Z", "Atlanta Stadium", "ESP", "KSA"),
-  fixtureSpec("I-2-1", "I", 2, "2026-06-23T22:00:00Z", "Boston Stadium", "FRA", "IRQ"),
-  fixtureSpec("I-2-2", "I", 2, "2026-06-24T01:00:00Z", "Dallas Stadium", "NOR", "SEN"),
-  fixtureSpec("J-2-1", "J", 2, "2026-06-24T01:00:00Z", "Atlanta Stadium", "ARG", "AUT"),
-  fixtureSpec("J-2-2", "J", 2, "2026-06-24T22:00:00Z", "Vancouver Stadium", "JOR", "ALG"),
-  fixtureSpec("K-2-1", "K", 2, "2026-06-24T19:00:00Z", "Kansas City Stadium", "POR", "UZB"),
-  fixtureSpec("K-2-2", "K", 2, "2026-06-25T01:00:00Z", "Miami Stadium", "COL", "COD"),
-  fixtureSpec("L-2-1", "L", 2, "2026-06-25T01:00:00Z", "Boston Stadium", "ENG", "GHA"),
-  fixtureSpec("L-2-2", "L", 2, "2026-06-25T22:00:00Z", "Toronto Stadium", "PAN", "CRO"),
+  fixtureSpec("D-2-1", "D", 2, "2026-06-21T01:00:00Z", "Seattle Stadium", "AUS", "PAR", {
+    homeGoals: 2,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("D-2-2", "D", 2, "2026-06-21T22:00:00Z", "Philadelphia Stadium", "USA", "TUR", {
+    homeGoals: 3,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("E-2-1", "E", 2, "2026-06-21T19:00:00Z", "Dallas Stadium", "GER", "CIV", {
+    homeGoals: 3,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("E-2-2", "E", 2, "2026-06-22T01:00:00Z", "Vancouver Stadium", "ECU", "CUW", {
+    homeGoals: 4,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("F-2-1", "F", 2, "2026-06-22T01:00:00Z", "New York New Jersey Stadium", "NED", "SWE", {
+    homeGoals: 2,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("F-2-2", "F", 2, "2026-06-22T22:00:00Z", "Mexico City Stadium", "TUN", "JPN", {
+    homeGoals: 1,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("G-2-1", "G", 2, "2026-06-22T19:00:00Z", "Houston Stadium", "BEL", "NZL", {
+    homeGoals: 5,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("G-2-2", "G", 2, "2026-06-23T01:00:00Z", "Los Angeles Stadium", "EGY", "IRN", {
+    homeGoals: 1,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("H-2-1", "H", 2, "2026-06-23T19:00:00Z", "Miami Stadium", "URU", "CPV", {
+    homeGoals: 3,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("H-2-2", "H", 2, "2026-06-23T22:00:00Z", "Atlanta Stadium", "ESP", "KSA", {
+    homeGoals: 2,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("I-2-1", "I", 2, "2026-06-23T22:00:00Z", "Boston Stadium", "FRA", "IRQ", {
+    homeGoals: 4,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("I-2-2", "I", 2, "2026-06-24T01:00:00Z", "Dallas Stadium", "NOR", "SEN", {
+    homeGoals: 1,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("J-2-1", "J", 2, "2026-06-24T01:00:00Z", "Atlanta Stadium", "ARG", "AUT", {
+    homeGoals: 2,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("J-2-2", "J", 2, "2026-06-24T22:00:00Z", "Vancouver Stadium", "JOR", "ALG", {
+    homeGoals: 1,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("K-2-1", "K", 2, "2026-06-24T19:00:00Z", "Kansas City Stadium", "POR", "UZB", {
+    homeGoals: 2,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("K-2-2", "K", 2, "2026-06-25T01:00:00Z", "Miami Stadium", "COL", "COD", {
+    homeGoals: 2,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("L-2-1", "L", 2, "2026-06-25T01:00:00Z", "Boston Stadium", "ENG", "GHA", {
+    homeGoals: 3,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("L-2-2", "L", 2, "2026-06-25T22:00:00Z", "Toronto Stadium", "PAN", "CRO", {
+    homeGoals: 0,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
 
-  fixtureSpec("A-3-1", "A", 3, "2026-06-24T22:00:00Z", "Mexico City Stadium", "CZE", "MEX"),
-  fixtureSpec("A-3-2", "A", 3, "2026-06-24T22:00:00Z", "Monterrey Stadium", "RSA", "KOR"),
-  fixtureSpec("B-3-1", "B", 3, "2026-06-25T22:00:00Z", "Vancouver Stadium", "CAN", "SUI"),
-  fixtureSpec("B-3-2", "B", 3, "2026-06-25T22:00:00Z", "San Francisco Bay Area Stadium", "QAT", "BIH"),
-  fixtureSpec("C-3-1", "C", 3, "2026-06-26T22:00:00Z", "Boston Stadium", "SCO", "BRA"),
-  fixtureSpec("C-3-2", "C", 3, "2026-06-26T22:00:00Z", "Atlanta Stadium", "MAR", "HAI"),
-  fixtureSpec("D-3-1", "D", 3, "2026-06-26T19:00:00Z", "Los Angeles Stadium", "AUS", "USA"),
-  fixtureSpec("D-3-2", "D", 3, "2026-06-26T19:00:00Z", "Seattle Stadium", "PAR", "TUR"),
-  fixtureSpec("E-3-1", "E", 3, "2026-06-27T19:00:00Z", "New York New Jersey Stadium", "ECU", "GER"),
-  fixtureSpec("E-3-2", "E", 3, "2026-06-27T19:00:00Z", "Philadelphia Stadium", "CUW", "CIV"),
-  fixtureSpec("F-3-1", "F", 3, "2026-06-27T22:00:00Z", "Dallas Stadium", "TUN", "NED"),
-  fixtureSpec("F-3-2", "F", 3, "2026-06-27T22:00:00Z", "Houston Stadium", "JPN", "SWE"),
-  fixtureSpec("G-3-1", "G", 3, "2026-06-28T22:00:00Z", "Los Angeles Stadium", "EGY", "BEL"),
-  fixtureSpec("G-3-2", "G", 3, "2026-06-28T22:00:00Z", "Kansas City Stadium", "IRN", "NZL"),
-  fixtureSpec("H-3-1", "H", 3, "2026-06-28T19:00:00Z", "Houston Stadium", "CPV", "KSA"),
-  fixtureSpec("H-3-2", "H", 3, "2026-06-28T19:00:00Z", "Guadalajara Stadium", "URU", "ESP"),
-  fixtureSpec("I-3-1", "I", 3, "2026-06-29T22:00:00Z", "New York New Jersey Stadium", "NOR", "FRA"),
-  fixtureSpec("I-3-2", "I", 3, "2026-06-29T22:00:00Z", "Philadelphia Stadium", "SEN", "IRQ"),
-  fixtureSpec("J-3-1", "J", 3, "2026-06-29T19:00:00Z", "Dallas Stadium", "JOR", "ARG"),
-  fixtureSpec("J-3-2", "J", 3, "2026-06-29T19:00:00Z", "Kansas City Stadium", "ALG", "AUT"),
-  fixtureSpec("K-3-1", "K", 3, "2026-06-30T22:00:00Z", "Miami Stadium", "COL", "POR"),
-  fixtureSpec("K-3-2", "K", 3, "2026-06-30T22:00:00Z", "Houston Stadium", "COD", "UZB"),
-  fixtureSpec("L-3-1", "L", 3, "2026-06-30T19:00:00Z", "New York New Jersey Stadium", "PAN", "ENG"),
-  fixtureSpec("L-3-2", "L", 3, "2026-06-30T19:00:00Z", "Philadelphia Stadium", "CRO", "GHA")
+  fixtureSpec("A-3-1", "A", 3, "2026-06-24T22:00:00Z", "Mexico City Stadium", "CZE", "MEX", {
+    homeGoals: 1,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("A-3-2", "A", 3, "2026-06-24T22:00:00Z", "Monterrey Stadium", "RSA", "KOR", {
+    homeGoals: 1,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("B-3-1", "B", 3, "2026-06-25T22:00:00Z", "Vancouver Stadium", "CAN", "SUI", {
+    homeGoals: 2,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("B-3-2", "B", 3, "2026-06-25T22:00:00Z", "San Francisco Bay Area Stadium", "QAT", "BIH", {
+    homeGoals: 1,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("C-3-1", "C", 3, "2026-06-26T22:00:00Z", "Boston Stadium", "SCO", "BRA", {
+    homeGoals: 0,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("C-3-2", "C", 3, "2026-06-26T22:00:00Z", "Atlanta Stadium", "MAR", "HAI", {
+    homeGoals: 3,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("D-3-1", "D", 3, "2026-06-26T19:00:00Z", "Los Angeles Stadium", "AUS", "USA", {
+    homeGoals: 1,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("D-3-2", "D", 3, "2026-06-26T19:00:00Z", "Seattle Stadium", "PAR", "TUR", {
+    homeGoals: 0,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("E-3-1", "E", 3, "2026-06-27T19:00:00Z", "New York New Jersey Stadium", "ECU", "GER", {
+    homeGoals: 1,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("E-3-2", "E", 3, "2026-06-27T19:00:00Z", "Philadelphia Stadium", "CUW", "CIV", {
+    homeGoals: 0,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("F-3-1", "F", 3, "2026-06-27T22:00:00Z", "Dallas Stadium", "TUN", "NED", {
+    homeGoals: 1,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("F-3-2", "F", 3, "2026-06-27T22:00:00Z", "Houston Stadium", "JPN", "SWE", {
+    homeGoals: 3,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("G-3-1", "G", 3, "2026-06-28T22:00:00Z", "Los Angeles Stadium", "EGY", "BEL", {
+    homeGoals: 1,
+    awayGoals: 3,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("G-3-2", "G", 3, "2026-06-28T22:00:00Z", "Kansas City Stadium", "IRN", "NZL", {
+    homeGoals: 3,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("H-3-1", "H", 3, "2026-06-28T19:00:00Z", "Houston Stadium", "CPV", "KSA", {
+    homeGoals: 1,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("H-3-2", "H", 3, "2026-06-28T19:00:00Z", "Guadalajara Stadium", "URU", "ESP", {
+    homeGoals: 1,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("I-3-1", "I", 3, "2026-06-29T22:00:00Z", "New York New Jersey Stadium", "NOR", "FRA", {
+    homeGoals: 0,
+    awayGoals: 3,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("I-3-2", "I", 3, "2026-06-29T22:00:00Z", "Philadelphia Stadium", "SEN", "IRQ", {
+    homeGoals: 2,
+    awayGoals: 0,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("J-3-1", "J", 3, "2026-06-29T19:00:00Z", "Dallas Stadium", "JOR", "ARG", {
+    homeGoals: 0,
+    awayGoals: 3,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("J-3-2", "J", 3, "2026-06-29T19:00:00Z", "Kansas City Stadium", "ALG", "AUT", {
+    homeGoals: 1,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("K-3-1", "K", 3, "2026-06-30T22:00:00Z", "Miami Stadium", "COL", "POR", {
+    homeGoals: 1,
+    awayGoals: 2,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("K-3-2", "K", 3, "2026-06-30T22:00:00Z", "Houston Stadium", "COD", "UZB", {
+    homeGoals: 1,
+    awayGoals: 1,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("L-3-1", "L", 3, "2026-06-30T19:00:00Z", "New York New Jersey Stadium", "PAN", "ENG", {
+    homeGoals: 0,
+    awayGoals: 3,
+    source: resultFallbackSource
+  }),
+  fixtureSpec("L-3-2", "L", 3, "2026-06-30T19:00:00Z", "Philadelphia Stadium", "CRO", "GHA", {
+    homeGoals: 2,
+    awayGoals: 0,
+    source: resultFallbackSource
+  })
 ];
 
 function fixtureSpec(
