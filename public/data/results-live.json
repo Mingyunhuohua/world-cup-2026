@@ -1,6 +1,6 @@
 {
   "label": "真实赛果 (live)",
-  "generatedAt": "2026-06-27T20:17:30.336Z",
+  "generatedAt": "2026-06-28T10:12:56.274Z",
   "adapter": {
     "id": "match-results",
     "label": "真实赛果",
@@ -170,11 +170,53 @@
       "homeGoals": 1,
       "awayGoals": 5,
       "commenceTime": "2026-06-27T03:01:00Z"
+    },
+    {
+      "homeAbbr": "CRO",
+      "awayAbbr": "GHA",
+      "homeGoals": 2,
+      "awayGoals": 1,
+      "commenceTime": "2026-06-27T21:00:00Z"
+    },
+    {
+      "homeAbbr": "PAN",
+      "awayAbbr": "ENG",
+      "homeGoals": 0,
+      "awayGoals": 2,
+      "commenceTime": "2026-06-27T21:00:00Z"
+    },
+    {
+      "homeAbbr": "COL",
+      "awayAbbr": "POR",
+      "homeGoals": 0,
+      "awayGoals": 0,
+      "commenceTime": "2026-06-27T23:30:00Z"
+    },
+    {
+      "homeAbbr": "COD",
+      "awayAbbr": "UZB",
+      "homeGoals": 3,
+      "awayGoals": 1,
+      "commenceTime": "2026-06-27T23:30:00Z"
+    },
+    {
+      "homeAbbr": "ALG",
+      "awayAbbr": "AUT",
+      "homeGoals": 3,
+      "awayGoals": 3,
+      "commenceTime": "2026-06-28T02:00:00Z"
+    },
+    {
+      "homeAbbr": "JOR",
+      "awayAbbr": "ARG",
+      "homeGoals": 1,
+      "awayGoals": 3,
+      "commenceTime": "2026-06-28T02:00:00Z"
     }
   ],
   "warnings": [
-    "已从 The Odds API 拉取 31 场比赛，识别出 16 场已完赛真实比分。",
-    "已与历史累积合并：累计 23 场（本次新窗口 16 场）。",
-    "The Odds API 本月剩余额度：426 次请求。"
+    "已从 The Odds API 拉取 34 场比赛，识别出 18 场已完赛真实比分。",
+    "已与历史累积合并：累计 29 场（本次新窗口 18 场）。",
+    "The Odds API 本月剩余额度：423 次请求。"
   ]
 }
