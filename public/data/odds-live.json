@@ -1,6 +1,6 @@
 {
   "label": "赔率市场 (live)",
-  "generatedAt": "2026-06-28T23:47:29.763Z",
+  "generatedAt": "2026-06-29T14:39:51.666Z",
   "adapter": {
     "id": "odds-market",
     "label": "赔率市场",
@@ -14,35 +14,35 @@
   "teamPatches": [
     {
       "abbr": "BRA",
-      "form": 0.115
+      "form": 0.108
     },
     {
       "abbr": "JPN",
-      "form": -0.077
+      "form": -0.072
     },
     {
       "abbr": "GER",
-      "form": 0.195
+      "form": 0.186
     },
     {
       "abbr": "PAR",
-      "form": -0.118
+      "form": -0.114
     },
     {
       "abbr": "NED",
-      "form": 0.045
+      "form": 0.042
     },
     {
       "abbr": "MAR",
-      "form": -0.032
+      "form": -0.028
     },
     {
       "abbr": "CIV",
-      "form": -0.037
+      "form": -0.038
     },
     {
       "abbr": "NOR",
-      "form": 0.068
+      "form": 0.07
     },
     {
       "abbr": "FRA",
@@ -54,11 +54,11 @@
     },
     {
       "abbr": "MEX",
-      "form": 0.045
+      "form": 0.05
     },
     {
       "abbr": "ECU",
-      "form": -0.039
+      "form": -0.046
     },
     {
       "abbr": "ENG",
@@ -66,23 +66,23 @@
     },
     {
       "abbr": "COD",
-      "form": -0.129
+      "form": -0.13
     },
     {
       "abbr": "BEL",
-      "form": 0.056
+      "form": 0.05
     },
     {
       "abbr": "SEN",
-      "form": -0.038
+      "form": -0.031
     },
     {
       "abbr": "USA",
-      "form": 0.186
+      "form": 0.184
     },
     {
       "abbr": "BIH",
-      "form": -0.114
+      "form": -0.113
     },
     {
       "abbr": "ESP",
@@ -94,27 +94,27 @@
     },
     {
       "abbr": "POR",
-      "form": 0.099
+      "form": 0.102
     },
     {
       "abbr": "CRO",
-      "form": -0.068
+      "form": -0.069
     },
     {
       "abbr": "SUI",
-      "form": 0.071
+      "form": 0.072
     },
     {
       "abbr": "ALG",
-      "form": -0.047
+      "form": -0.048
     },
     {
       "abbr": "AUS",
-      "form": -0.023
+      "form": -0.024
     },
     {
       "abbr": "EGY",
-      "form": 0.025
+      "form": 0.027
     },
     {
       "abbr": "ARG",
@@ -122,20 +122,20 @@
     },
     {
       "abbr": "CPV",
-      "form": -0.142
+      "form": -0.141
     },
     {
       "abbr": "COL",
-      "form": 0.146
+      "form": 0.147
     },
     {
       "abbr": "GHA",
-      "form": -0.101
+      "form": -0.102
     }
   ],
   "warnings": [
     "已从 The Odds API 拉取 15 场比赛的真实赔率，折算出 30 支球队的市场信号。",
-    "The Odds API 本月剩余额度：415 次请求。",
+    "The Odds API 本月剩余额度：409 次请求。",
     "赔率折算为相对中性的市场胜率信号（去除庄家抽水），用于调整 form；非官方夺冠赔率。"
   ]
 }
