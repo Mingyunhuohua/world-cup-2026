@@ -1,6 +1,6 @@
 {
   "label": "真实赛果 (live)",
-  "generatedAt": "2026-06-29T14:39:51.949Z",
+  "generatedAt": "2026-06-29T21:13:06.362Z",
   "adapter": {
     "id": "match-results",
     "label": "真实赛果",
@@ -219,11 +219,18 @@
       "homeGoals": 0,
       "awayGoals": 1,
       "commenceTime": "2026-06-28T19:00:00Z"
+    },
+    {
+      "homeAbbr": "BRA",
+      "awayAbbr": "JPN",
+      "homeGoals": 2,
+      "awayGoals": 1,
+      "commenceTime": "2026-06-29T17:00:00Z"
     }
   ],
   "warnings": [
-    "已从 The Odds API 拉取 28 场比赛，识别出 13 场已完赛真实比分。",
-    "已与历史累积合并：累计 30 场（本次新窗口 13 场）。",
-    "The Odds API 本月剩余额度：407 次请求。"
+    "已从 The Odds API 拉取 26 场比赛，识别出 12 场已完赛真实比分。",
+    "已与历史累积合并：累计 31 场（本次新窗口 12 场）。",
+    "The Odds API 本月剩余额度：402 次请求。"
   ]
 }
