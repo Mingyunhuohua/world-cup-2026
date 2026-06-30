@@ -1,6 +1,6 @@
 {
   "label": "真实赛果 (live)",
-  "generatedAt": "2026-06-30T18:23:34.909Z",
+  "generatedAt": "2026-06-30T23:53:05.060Z",
   "adapter": {
     "id": "match-results",
     "label": "真实赛果",
@@ -240,11 +240,25 @@
       "homeGoals": 1,
       "awayGoals": 1,
       "commenceTime": "2026-06-30T00:59:00Z"
+    },
+    {
+      "homeAbbr": "CIV",
+      "awayAbbr": "NOR",
+      "homeGoals": 1,
+      "awayGoals": 2,
+      "commenceTime": "2026-06-30T17:00:00Z"
+    },
+    {
+      "homeAbbr": "FRA",
+      "awayAbbr": "SWE",
+      "homeGoals": 3,
+      "awayGoals": 0,
+      "commenceTime": "2026-06-30T21:00:00Z"
     }
   ],
   "warnings": [
-    "已从 The Odds API 拉取 23 场比赛，识别出 10 场已完赛真实比分。",
-    "已与历史累积合并：累计 33 场（本次新窗口 10 场）。",
-    "The Odds API 本月剩余额度：391 次请求。"
+    "已从 The Odds API 拉取 21 场比赛，识别出 8 场已完赛真实比分。",
+    "已与历史累积合并：累计 35 场（本次新窗口 8 场）。",
+    "The Odds API 本月剩余额度：387 次请求。"
   ]
 }
